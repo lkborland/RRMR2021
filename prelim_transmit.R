@@ -47,6 +47,18 @@ A_12053 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE
               na.strings = c("Sensor Fault"))) %>% 
               rename(Date.time.UTC = ï..Date.and.Time..UTC.)
 
+A_12054 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE Export\\A69-9007-12054.csv", 
+              na.strings = c("Sensor Fault"))) %>% 
+              rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+
+A_12055 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE Export\\A69-9007-12055.csv", 
+              na.strings = c("Sensor Fault"))) %>% 
+              rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+
+A_12056 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE Export\\A69-9007-12056.csv", 
+              na.strings = c("Sensor Fault"))) %>% 
+              rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+
 
 
 #Upload tagsheet
