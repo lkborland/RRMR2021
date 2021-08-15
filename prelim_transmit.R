@@ -226,13 +226,16 @@ A_13293 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE
 #Upload tagsheet
 tagsheet <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMRTagSheet.csv")
 
+#combine detections by transmitter tag as example to plot accelerometer data over time
+#STILL NEED TO ADD CONFIRMATION OF SENSOR UNIT AGREEMENT
+ex_comb_1 <- bind_rows(A_12048,A_12049)
 
 #PRELIMINARY - tell R the time range of seismic survey
 prelim_start <- ymd_hms("2021-06-10 00:00:01")
 prelim_end <- ymd_hms("2021-06-12 23:59:59")
 
 #for ggplot - highlight data timeperiod 
-plot_dat <- A_12053
+plot_dat <- ex_comb_1
 ex_plot <- ggplot(plot_dat, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
             geom_point()
 ex_plot + geom_rect(data=rects, inherit.aes=FALSE, aes(xmin=2021-06-10, xmax=2021-06-13, ymin=min(A_12053$Sensor.Value),
