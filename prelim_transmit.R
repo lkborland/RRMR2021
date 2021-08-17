@@ -1,7 +1,7 @@
 library(tidyverse)
 library(glatos)
 library(lubridate)
-
+library(gghighlight)
 
 #Assign prelim receiver logs to variables in the environment
 VR2AR_549764 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2AR_549764_20210721_1.csv")
@@ -21,6 +21,13 @@ VR2W_106004 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021R
 VR2W_110687 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2W_110687_20210608_1.csv")
 VR2W_110687_2 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2W_110687_20210608_2.csv")
 VR2W_110695 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2W_110695_20210608_1.csv")
+
+#Upload tagsheet
+tagsheet <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMRTagSheet.csv")) %>%
+              rename(Transmitter = VUE.Tag.ID)
+
+#new variable containing transmitter number and corresponding type of animal
+animal_transmit <- select(tagsheet, Transmitter, Tag.Destination)
 
 #Assign prelim transmitter (animal) logs to variables in the environment
 A_12048 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE Export\\A69-9007-12048.csv", 
@@ -223,22 +230,56 @@ A_13293 <- as_tibble(read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\VUE
               na.strings = c("Sensor Fault"))) %>% 
               rename(Date.time.UTC = ï..Date.and.Time..UTC.)
 
-#Upload tagsheet
-tagsheet <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMRTagSheet.csv")
+
+
+
 
 #combine detections by transmitter tag as example to plot accelerometer data over time
 #STILL NEED TO ADD CONFIRMATION OF SENSOR UNIT AGREEMENT
-ex_comb_1 <- bind_rows(A_12048,A_12049)
+ex_comb_1 <- bind_rows(A_12048, A_12049, A_12050, A_12051, A_12052, A_12053, A_12054, A_12055, A_12056, A_12057, A_12058, A_12059, 
+                       A_12060, A_12061, A_12062, A_12063, A_12064, A_12065, A_12066, A_12067, A_12068, A_12069, A_12070, A_12071,
+                       A_12074, A_12075, A_13249, A_13250, A_13251, A_13254, A_13258, A_13259, A_13260, A_13267, A_13269, A_13271,
+                       A_13276, A_13279, A_13280, A_13281, A_13282, A_13283, A_13284, A_13285, A_13286, A_13287, A_13290, A_13291,
+                       A_13292, A_13293)
+
+ex_comb_2 <- left_join(ex_comb_1, animal_transmit, by = "Transmitter")
 
 #PRELIMINARY - tell R the time range of seismic survey
 prelim_start <- ymd_hms("2021-06-10 00:00:01")
 prelim_end <- ymd_hms("2021-06-12 23:59:59")
 
-#for ggplot - highlight data timeperiod 
-plot_dat <- ex_comb_1
-ex_plot <- ggplot(plot_dat, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+#for ggplot - select out species for visualization
+plot_dat_Black <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Black"))
+plot_dat_China <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "China"))
+plot_dat_Dung <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness"))
+plot_dat_Ling <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
+
+#ggploting example by species for accelerometer data
+ex_plot_Black <- ggplot(plot_dat_Black, aes(Date.time.UTC, Sensor.Value)) + 
+                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+
+ex_plot_Black + stat_summary(fun = "mean", color = "red", geom = "point")
+
+  
+ex_plot_China <- ggplot(plot_dat_China, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+
+ex_plot_Dung <- ggplot(plot_dat_Dung, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+
+ex_plot_Ling <- ggplot(plot_dat_Ling, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+
+#example looking at timeframe 
+#ex_june10.12 <- plot_dat_Black %>% filter()
+
+#create example plotting for all accelerometer data
+ex_plot <- ggplot(plot_dat, aes(Date.time.UTC, Sensor.Value, color = Tag.Destination)) + 
             geom_point()
-ex_plot + geom_rect(data=rects, inherit.aes=FALSE, aes(xmin=2021-06-10, xmax=2021-06-13, ymin=min(A_12053$Sensor.Value),
-                                                       ymax=max(A_12053$Sensor.Value), group=group), color="transparent", fill="orange", alpha=0.3)
+ex_plot + facet_grid( ~ .Tag.Destination)
+  
+#highlight data timeperiod 
+  #geom_rect(data=rects, inherit.aes=FALSE, aes(xmin=2021-06-10, xmax=2021-06-13, ymin=0,
+                                                       #ymax=max(ex_comb_2$Sensor.Value), group=group), color="transparent", fill="orange", alpha=0.3)
 
 rects <- data.frame(start=prelim_start, end=prelim_end, group=seq_along(prelim_start))
