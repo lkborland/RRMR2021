@@ -2,6 +2,7 @@ library(tidyverse)
 library(glatos)
 library(lubridate)
 library(gghighlight)
+library(rstatix)
 
 #Assign prelim receiver logs to variables in the environment
 VR2AR_549764 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2AR_549764_20210721_1.csv")
@@ -285,7 +286,59 @@ prelim_june18e <- ymd_hms("2021-06-18 23:59:59")
 prelim_june19s <- ymd_hms("2021-06-19 00:00:01")
 prelim_june19e <- ymd_hms("2021-06-19 23:59:59")
 
-#summarize data points at each x (need to bin as the resolution is too fine to be visible)
+#adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
+prelim_periods_Dung <- plot_dat_Dung %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start | (Date.time.UTC > prelim_end & Date.time.UTC < prelim_june16s) ~ "Before and reference",
+                                                                          Date.time.UTC >= prelim_start & Date.time.UTC <= prelim_end ~ "During 6.10-12",
+                                                                          Date.time.UTC >= prelim_june16s & Date.time.UTC <= prelim_june16e ~ "June 16",
+                                                                          Date.time.UTC > prelim_june16e ~ "After June 16"))
+
+prelim_periods_Ling <- plot_dat_Ling %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start | (Date.time.UTC > prelim_end & Date.time.UTC < prelim_june16s) ~ "Before and reference",
+                                                                          Date.time.UTC >= prelim_start & Date.time.UTC <= prelim_end ~ "During 6.10-12",
+                                                                          Date.time.UTC >= prelim_june16s & Date.time.UTC <= prelim_june16e ~ "June 16",
+                                                                          Date.time.UTC > prelim_june16e ~ "After June 16"))
+
+#Ensure data manipulation worked propoerly and assess # of points per period
+#table(prelim_periods_Dung$prelim.period)   
+
+#create violin plot of preliminary Dungeness crab data across periods for visualization of acceleration values
+# Violin plot with trimmed tails and adding median points as data is skewed (mean unappropriate)
+p <- ggplot(prelim_periods_Dung, aes(x=prelim.period, y=Sensor.Value, fill=prelim.period)) + 
+      geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+      scale_x_discrete(limits=c("Before and reference", "During 6.10-12", "June 16", "After June 16")) +
+      labs(x = "Period of survey", y = "Acceleration values", title = "Dungeness Crab Acceleration by Period", fill="Period",
+      caption = "Based on preliminary collected data")
+  #stat_summary(fun=median, geom="point", size=2, color="red")
+p
+
+s <- ggplot(prelim_periods_Ling, aes(x=prelim.period, y=Sensor.Value, fill=prelim.period)) + 
+      geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+      scale_x_discrete(limits=c("Before and reference", "During 6.10-12", "June 16", "After June 16")) +
+      labs(x = "Period of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
+      caption = "Based on preliminary collected data")
+s
+
+
+#evaluate statistical differences in accelerometer value by period for preliminary data
+#first, check for extreme outliers for a repeated measures ANOVA
+dung_out <- prelim_periods_Dung %>% group_by(prelim.period) %>% identify_outliers(Sensor.Value)
+#dung_swtest <- prelim_periods_Dung %>% group_by(prelim.period) %>% shapiro_test(Sensor.Value)
+table(dung_out$is.extreme)
+
+ling_out <- prelim_periods_Ling %>% group_by(prelim.period) %>% identify_outliers(Sensor.Value)
+#ling_swtest <- prelim_periods_Ling %>% group_by(prelim.period) %>% shapiro_test(Sensor.Value)
+table(ling_out$is.extreme)
+
+#convert period to factors
+dc_fried <- prelim_periods_Dung %>% convert_as_factor(prelim.period, Transmitter)
+lc_fried <- prelim_periods_Ling %>% convert_as_factor(prelim.period, Transmitter)
+
+#non-parametric Friedman test for Dungeness and lingcod
+dc_fried_test <- dc_fried %>% friedman_test(Sensor.Value ~ prelim.period | Transmitter)
+dc_fried_test
+
+friedman.test(Sensor.Value ~ prelim.period | Transmitter, data=dc_fried)
+#Friedman test (non %>% friendly) for Dungeness and lingcod
+#create matrix with all values for each period
 
 
 #create example plotting for all accelerometer data for all species
@@ -305,3 +358,11 @@ ex_plot <- ggplot(plot_dat, aes(x = Date.time.UTC, y = Sensor.Value, colour=Tag.
                                                        #ymax=max(ex_comb_2$Sensor.Value), group=group), color="transparent", fill="orange", alpha=0.3)
 
 rects <- data.frame(start=prelim_start, end=prelim_end, group=seq_along(prelim_start))
+
+
+
+#use GLATOS to assess prelim data: 
+#NEED TO UPLOAD DATA INTO GLATOS FORMAT
+#summarize_detections()
+
+#abacus_plot()
