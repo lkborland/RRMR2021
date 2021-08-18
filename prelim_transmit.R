@@ -244,9 +244,6 @@ ex_comb_1 <- bind_rows(A_12048, A_12049, A_12050, A_12051, A_12052, A_12053, A_1
 
 ex_comb_2 <- left_join(ex_comb_1, animal_transmit, by = "Transmitter")
 
-#PRELIMINARY - tell R the time range of seismic survey
-prelim_start <- ymd_hms("2021-06-10 00:00:01")
-prelim_end <- ymd_hms("2021-06-12 23:59:59")
 
 #for ggplot - select out species for visualization
 plot_dat_Black <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Black"))
@@ -254,15 +251,19 @@ plot_dat_China <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "China"))
 plot_dat_Dung <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness"))
 plot_dat_Ling <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
 
-#ggploting example by species for accelerometer data
+#ggploting example by species for accelerometer data: highlight 6/10-12
+#PRELIMINARY - tell R the time range of seismic survey
+prelim_start <- ymd_hms("2021-06-10 00:00:01")
+prelim_end <- ymd_hms("2021-06-12 23:59:59")
+
 ex_plot_Black <- ggplot(plot_dat_Black, aes(Date.time.UTC, Sensor.Value)) + 
                   geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
 
-ex_plot_Black + stat_summary(fun = "mean", color = "red", geom = "point")
+      #ex_plot_Black + stat_summary(fun = "mean", color = "red", geom = "point")
 
   
 ex_plot_China <- ggplot(plot_dat_China, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
-                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+                  geom_point() #+ gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
 
 ex_plot_Dung <- ggplot(plot_dat_Dung, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
                   geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
@@ -270,13 +271,34 @@ ex_plot_Dung <- ggplot(plot_dat_Dung, aes(Date.time.UTC, Sensor.Value, color = T
 ex_plot_Ling <- ggplot(plot_dat_Ling, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
                   geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
 
-#example looking at timeframe 
-#ex_june10.12 <- plot_dat_Black %>% filter()
+#example plotting looking at other estimated timeframes of seismic survey booms
+#variables containing days of preliminary seismic boom detections
+prelim_june16s <- ymd_hms("2021-06-16 00:00:01")
+prelim_june16e <- ymd_hms("2021-06-16 23:59:59")
 
-#create example plotting for all accelerometer data
+ex_plot_Dung <- ggplot(plot_dat_Dung, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+  geom_point() + gghighlight((Date.time.UTC >= prelim_june16s) & (Date.time.UTC <= prelim_june16e))
+
+prelim_june18s <- ymd_hms("2021-06-18 00:00:01")
+prelim_june18e <- ymd_hms("2021-06-18 23:59:59")
+
+prelim_june19s <- ymd_hms("2021-06-19 00:00:01")
+prelim_june19e <- ymd_hms("2021-06-19 23:59:59")
+
+#summarize data points at each x (need to bin as the resolution is too fine to be visible)
+
+
+#create example plotting for all accelerometer data for all species
 ex_plot <- ggplot(plot_dat, aes(Date.time.UTC, Sensor.Value, color = Tag.Destination)) + 
             geom_point()
 ex_plot + facet_grid( ~ .Tag.Destination)
+
+#Overlay moving average over time
+ex_plot <- ggplot(plot_dat, aes(x = Date.time.UTC, y = Sensor.Value, colour=Tag.Destination)) + 
+  geom_point(size=4) + 
+  facet_grid(Tag.Destination~.) + 
+  stat_summary(fun=mean, aes(group=1), geom="line", colour="blue") +
+  stat_summary(fun=mean, aes(group=1), geom="point", colour="blue", size=3, shape=4)
   
 #highlight data timeperiod 
   #geom_rect(data=rects, inherit.aes=FALSE, aes(xmin=2021-06-10, xmax=2021-06-13, ymin=0,
