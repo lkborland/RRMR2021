@@ -328,15 +328,21 @@ ling_out <- prelim_periods_Ling %>% group_by(prelim.period) %>% identify_outlier
 #ling_swtest <- prelim_periods_Ling %>% group_by(prelim.period) %>% shapiro_test(Sensor.Value)
 table(ling_out$is.extreme)
 
-#convert period to factors
-dc_fried <- prelim_periods_Dung %>% convert_as_factor(prelim.period, Transmitter)
-lc_fried <- prelim_periods_Ling %>% convert_as_factor(prelim.period, Transmitter)
+#convert period to factors and data frames
+dc_fried <- prelim_periods_Dung %>% convert_as_factor(prelim.period, Transmitter) %>% 
+            select(Transmitter, prelim.period, Sensor.Value) %>% filter(!is.na(Sensor.Value))
+dc_fried_df <- as.data.frame(dc_fried)
+
+lc_fried <- prelim_periods_Ling %>% convert_as_factor(prelim.period, Transmitter) %>% 
+            select(Transmitter, prelim.period, Sensor.Value) %>% filter(!is.na(Sensor.Value))
+lc_fried_df <- as.data.frame(lc_fried)
+
 
 #non-parametric Friedman test for Dungeness and lingcod
-dc_fried_test <- dc_fried %>% friedman_test(Sensor.Value ~ prelim.period | Transmitter)
+dc_fried_test <- dc_fried_df %>% friedman_test(Sensor.Value ~ prelim.period | Transmitter)
 dc_fried_test
 
-friedman.test(Sensor.Value ~ prelim.period | Transmitter, data=dc_fried)
+friedman.test(Sensor.Value ~ prelim.period | Transmitter, data=dc_fried_df)
 #Friedman test (non %>% friendly) for Dungeness and lingcod
 #create matrix with all values for each period
 
