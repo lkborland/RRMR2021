@@ -267,10 +267,14 @@ ex_plot_China <- ggplot(plot_dat_China, aes(Date.time.UTC, Sensor.Value, color =
                   geom_point() #+ gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
 
 ex_plot_Dung <- ggplot(plot_dat_Dung, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
-                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end)) + 
+                  labs(x = "Time", y = "Acceleration values", title = "Dungeness Crab Acceleration Over Time", color="Transmitter",
+                  caption = "Based on preliminary collected data")
 
 ex_plot_Ling <- ggplot(plot_dat_Ling, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
-                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end))
+                  geom_point() + gghighlight((Date.time.UTC >= prelim_start) & (Date.time.UTC <= prelim_end)) +
+                  labs(x = "Time", y = "Acceleration values", title = "Lingcod Acceleration Over Time", color="Transmitter",
+                  caption = "Based on preliminary collected data")
 
 #example plotting looking at other estimated timeframes of seismic survey booms
 #variables containing days of preliminary seismic boom detections
@@ -287,15 +291,23 @@ prelim_june19s <- ymd_hms("2021-06-19 00:00:01")
 prelim_june19e <- ymd_hms("2021-06-19 23:59:59")
 
 #adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
-prelim_periods_Dung <- plot_dat_Dung %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start | (Date.time.UTC > prelim_end & Date.time.UTC < prelim_june16s) ~ "Before and reference",
+prelim_periods_Dung <- plot_dat_Dung %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start ~ "Before",
                                                                           Date.time.UTC >= prelim_start & Date.time.UTC <= prelim_end ~ "During 6.10-12",
+                                                                          Date.time.UTC > prelim_end & Date.time.UTC < prelim_june16s ~ "June 12-16",
                                                                           Date.time.UTC >= prelim_june16s & Date.time.UTC <= prelim_june16e ~ "June 16",
-                                                                          Date.time.UTC > prelim_june16e ~ "After June 16"))
+                                                                          Date.time.UTC > prelim_june16e & Date.time.UTC < prelim_june18s ~ "June 16-18",
+                                                                          Date.time.UTC >= prelim_june18s & Date.time.UTC <= prelim_june18e ~ "June 18",
+                                                                          Date.time.UTC > prelim_june18e & Date.time.UTC <= prelim_june19e ~ "June 19",
+                                                                          Date.time.UTC > prelim_june19e ~ "After June 19"))
 
-prelim_periods_Ling <- plot_dat_Ling %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start | (Date.time.UTC > prelim_end & Date.time.UTC < prelim_june16s) ~ "Before and reference",
+prelim_periods_Ling <- plot_dat_Ling %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start ~ "Before",
                                                                           Date.time.UTC >= prelim_start & Date.time.UTC <= prelim_end ~ "During 6.10-12",
+                                                                          Date.time.UTC > prelim_end & Date.time.UTC < prelim_june16s ~ "June 12-16",
                                                                           Date.time.UTC >= prelim_june16s & Date.time.UTC <= prelim_june16e ~ "June 16",
-                                                                          Date.time.UTC > prelim_june16e ~ "After June 16"))
+                                                                          Date.time.UTC > prelim_june16e & Date.time.UTC < prelim_june18s ~ "June 16-18",
+                                                                          Date.time.UTC >= prelim_june18s & Date.time.UTC <= prelim_june18e ~ "June 18",
+                                                                          Date.time.UTC > prelim_june18e & Date.time.UTC <= prelim_june19e ~ "June 19",
+                                                                          Date.time.UTC > prelim_june19e ~ "After June 19"))
 
 #Ensure data manipulation worked propoerly and assess # of points per period
 #table(prelim_periods_Dung$prelim.period)   
@@ -304,7 +316,7 @@ prelim_periods_Ling <- plot_dat_Ling %>% mutate(prelim.period = case_when(Date.t
 # Violin plot with trimmed tails and adding median points as data is skewed (mean unappropriate)
 p <- ggplot(prelim_periods_Dung, aes(x=prelim.period, y=Sensor.Value, fill=prelim.period)) + 
       geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
-      scale_x_discrete(limits=c("Before and reference", "During 6.10-12", "June 16", "After June 16")) +
+      scale_x_discrete(limits=c("Before", "During 6.10-12", "June 12-16", "June 16", "June 16-18", "June 18", "June 19", "After June 19")) +
       labs(x = "Period of survey", y = "Acceleration values", title = "Dungeness Crab Acceleration by Period", fill="Period",
       caption = "Based on preliminary collected data")
   #stat_summary(fun=median, geom="point", size=2, color="red")
@@ -312,7 +324,7 @@ p
 
 s <- ggplot(prelim_periods_Ling, aes(x=prelim.period, y=Sensor.Value, fill=prelim.period)) + 
       geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
-      scale_x_discrete(limits=c("Before and reference", "During 6.10-12", "June 16", "After June 16")) +
+      scale_x_discrete(limits=c("Before", "During 6.10-12", "June 12-16", "June 16", "June 16-18", "June 18", "June 19", "After June 19")) +
       labs(x = "Period of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
       caption = "Based on preliminary collected data")
 s
