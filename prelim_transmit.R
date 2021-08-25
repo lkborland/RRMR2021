@@ -3,6 +3,7 @@ library(glatos)
 library(lubridate)
 library(gghighlight)
 library(rstatix)
+library(lme4)
 
 #Assign prelim receiver logs to variables in the environment
 VR2AR_549764 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2AR_549764_20210721_1.csv")
@@ -311,6 +312,7 @@ prelim_periods_Ling <- plot_dat_Ling %>% mutate(prelim.period = case_when(Date.t
 
 #Ensure data manipulation worked propoerly and assess # of points per period
 #table(prelim_periods_Dung$prelim.period)   
+#prelim_periods_Dung %>% filter(prelim.period == "June 19")
 
 #create violin plot of preliminary Dungeness crab data across periods for visualization of acceleration values
 # Violin plot with trimmed tails and adding median points as data is skewed (mean unappropriate)
@@ -342,7 +344,8 @@ table(ling_out$is.extreme)
 
 #convert period to factors and data frames
 dc_fried <- prelim_periods_Dung %>% convert_as_factor(prelim.period, Transmitter) %>% 
-            select(Transmitter, prelim.period, Sensor.Value) %>% filter(!is.na(Sensor.Value))
+            dplyr::select(Transmitter, prelim.period, Sensor.Value) %>% filter(!is.na(Sensor.Value)) %>% 
+            filter(prelim.period == "Before" | prelim.period == "During 6.10-12" | prelim.period == "June 12-16")
 dc_fried_df <- as.data.frame(dc_fried)
 
 lc_fried <- prelim_periods_Ling %>% convert_as_factor(prelim.period, Transmitter) %>% 
@@ -351,7 +354,7 @@ lc_fried_df <- as.data.frame(lc_fried)
 
 
 #non-parametric Friedman test for Dungeness and lingcod
-dc_fried_test <- dc_fried_df %>% friedman_test(Sensor.Value ~ prelim.period | Transmitter)
+dc_fried_test <- dc_fried %>% friedman_test(Sensor.Value ~ prelim.period | Transmitter)
 dc_fried_test
 
 friedman.test(Sensor.Value ~ prelim.period | Transmitter, data=dc_fried_df)
@@ -381,6 +384,10 @@ rects <- data.frame(start=prelim_start, end=prelim_end, group=seq_along(prelim_s
 
 #use GLATOS to assess prelim data: 
 #NEED TO UPLOAD DATA INTO GLATOS FORMAT
+#spec_file <- system.file("extdata", "lamprey_tag_specs.xls", package = "glatos") #D:\MS research\Prelim_RRMR2021ReceiverLogs\RRMR2021ReceiverLogs
+#my_tags <- read_vemco_tag_specs(spec_file, file_format = "vemco_xls")
+                         
+read_vemco_tag_specs()
 #summarize_detections()
 
 #abacus_plot()
