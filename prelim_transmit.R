@@ -250,7 +250,7 @@ ex_comb_2 <- left_join(ex_comb_1, animal_transmit, by = "Transmitter")
 #for ggplot - select out species for visualization
 plot_dat_Black <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Black"))
 plot_dat_China <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "China"))
-plot_dat_Dung <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness"))
+plot_dat_Dung <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness")) %>% tidyr::drop_na(Sensor.Value)
 plot_dat_Ling <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
 
 #ggploting example by species for accelerometer data: highlight 6/10-12
@@ -330,6 +330,14 @@ s <- ggplot(prelim_periods_Ling, aes(x=prelim.period, y=Sensor.Value, fill=preli
       labs(x = "Period of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
       caption = "Based on preliminary collected data")
 s
+
+
+
+#LM evaluate residuals
+Dung.prelim.lm <- lm(Sensor.Value ~ Date.time.UTC, data=prelim_periods_Dung)
+Dung.prelim.resid <- resid(Dung.prelim.lm)
+(plot(fitted(Dung.prelim.lm), Dung.prelim.resid))
+qqnorm(Dung.prelim.resid)
 
 
 #evaluate statistical differences in accelerometer value by period for preliminary data
