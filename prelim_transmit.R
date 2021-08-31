@@ -4,6 +4,7 @@ library(lubridate)
 library(gghighlight)
 library(rstatix)
 library(lme4)
+library(gamm4)
 
 #Assign prelim receiver logs to variables in the environment
 VR2AR_549764 <- read.csv("D:\\MS research\\Prelim_RRMR2021ReceiverLogs\\RRMR2021ReceiverLogs\\VR2AR_549764_20210721_1.csv")
@@ -291,6 +292,15 @@ prelim_june18e <- ymd_hms("2021-06-18 23:59:59")
 prelim_june19s <- ymd_hms("2021-06-19 00:00:01")
 prelim_june19e <- ymd_hms("2021-06-19 23:59:59")
 
+#find minimum (earliest) time for each transmitter to feed to time since release
+#TSR <- Date.time.UTC - min(Date.time.UTC)
+#add first time to each row by individual/tag
+#use difftime for time after release
+#convert to posixct: as.POSIXct(strptime("2011-03-27 01:30:00", "%Y-%m-%d %H:%M:%S"))
+prelim_periods_Dung$Date.time.UTC <- as.POSIXct(strptime(prelim_periods_Dung$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+prelim_periods_Ling$Date.time.UTC <- as.POSIXct(strptime(prelim_periods_Ling$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+
+
 #adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
 prelim_periods_Dung <- plot_dat_Dung %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start ~ "Before",
                                                                           Date.time.UTC >= prelim_start & Date.time.UTC <= prelim_end ~ "During 6.10-12",
@@ -339,6 +349,10 @@ Dung.prelim.resid <- resid(Dung.prelim.lm)
 (plot(fitted(Dung.prelim.lm), Dung.prelim.resid))
 qqnorm(Dung.prelim.resid)
 
+
+#GAMM following Cote et al. 2020
+##Velocity ∼ s(TSR) + s(Temp) + s(HoD) + Location*Exposure Period + (1 | Year/Individual) 
+Dung.gamm <- gamm4(Sensor.Value ~ s() + s() )
 
 #evaluate statistical differences in accelerometer value by period for preliminary data
 #first, check for extreme outliers for a repeated measures ANOVA
