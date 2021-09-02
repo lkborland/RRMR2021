@@ -292,14 +292,6 @@ prelim_june18e <- ymd_hms("2021-06-18 23:59:59")
 prelim_june19s <- ymd_hms("2021-06-19 00:00:01")
 prelim_june19e <- ymd_hms("2021-06-19 23:59:59")
 
-#find minimum (earliest) time for each transmitter to feed to time since release
-#TSR <- Date.time.UTC - min(Date.time.UTC)
-#add first time to each row by individual/tag
-#use difftime for time after release
-#convert to posixct: as.POSIXct(strptime("2011-03-27 01:30:00", "%Y-%m-%d %H:%M:%S"))
-prelim_periods_Dung$Date.time.UTC <- as.POSIXct(strptime(prelim_periods_Dung$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
-prelim_periods_Ling$Date.time.UTC <- as.POSIXct(strptime(prelim_periods_Ling$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
-
 
 #adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
 prelim_periods_Dung <- plot_dat_Dung %>% mutate(prelim.period = case_when(Date.time.UTC < prelim_start ~ "Before",
@@ -320,8 +312,23 @@ prelim_periods_Ling <- plot_dat_Ling %>% mutate(prelim.period = case_when(Date.t
                                                                           Date.time.UTC > prelim_june18e & Date.time.UTC <= prelim_june19e ~ "June 19",
                                                                           Date.time.UTC > prelim_june19e ~ "After June 19"))
 
-#Ensure data manipulation worked propoerly and assess # of points per period
-#table(prelim_periods_Dung$prelim.period)   
+
+#convert to posixct: as.POSIXct(strptime("2011-03-27 01:30:00", "%Y-%m-%d %H:%M:%S"))
+prelim_periods_Dung$Date.time.UTC <- as.POSIXct(strptime(prelim_periods_Dung$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+prelim_periods_Ling$Date.time.UTC <- as.POSIXct(strptime(prelim_periods_Ling$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+#add column of minimum time based on detections, by individual
+prelim_periods_Dung <- prelim_periods_Dung %>% group_by(Transmitter) %>% mutate(time.min = min(Date.time.UTC))
+prelim_periods_Ling <- prelim_periods_Ling %>% group_by(Transmitter) %>% mutate(time.min = min(Date.time.UTC))
+
+
+#find minimum (earliest) time for each transmitter to feed to time since release
+#add first time to each row by individual/tag
+#use difftime for time after release
+prelim_periods_Dung$TSR <- difftime(prelim_periods_Dung$Date.time.UTC, prelim_periods_Dung$time.min, units = "mins")
+prelim_periods_Ling$TSR <- difftime(prelim_periods_Ling$Date.time.UTC, prelim_periods_Ling$time.min, units = "mins")
+
+#Ensure data manipulation worked properly and assess # of points per period
+#table(prelim_periods_Dung$prelim.period)
 #prelim_periods_Dung %>% filter(prelim.period == "June 19")
 
 #create violin plot of preliminary Dungeness crab data across periods for visualization of acceleration values
@@ -352,7 +359,8 @@ qqnorm(Dung.prelim.resid)
 
 #GAMM following Cote et al. 2020
 ##Velocity ∼ s(TSR) + s(Temp) + s(HoD) + Location*Exposure Period + (1 | Year/Individual) 
-Dung.gamm <- gamm4(Sensor.Value ~ s() + s() )
+Dung.gamm <- gamm4(Sensor.Value ~ s(TSR) + s(time.of.day) + s(prelim.period), 
+                   data = prelim_periods_Dung, random = ~ (1 | Transmitter))
 
 #evaluate statistical differences in accelerometer value by period for preliminary data
 #first, check for extreme outliers for a repeated measures ANOVA
