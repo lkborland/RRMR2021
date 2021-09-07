@@ -6,6 +6,8 @@ library(ggspatial)
 library(rnaturalearth)
 library(rnaturalearthdata)
 library(ggspatial)
+library(gganimate)
+library(adehabitatHR)
 
 #set world map data
 mapWorld <- ne_countries(scale = "medium", returnclass = "sf")
@@ -19,7 +21,9 @@ mapPortO <- ggplot(data = mapWorld) + geom_sf() +
             geom_point(data = prelim_periods_Dung, mapping = aes(x = Longitude, y = Latitude), color = "cyan") +
             coord_sf(xlim = c(-127, -120), ylim = c(42.5, 43))
 
-
+#create animation over time of Dungeness crab detections (lat/long), color by period: render time ~5 min
 mapPortO <- ggplot(data = mapWorld) + geom_sf() + 
-  geom_point(data = prelim_periods_Dung, mapping = aes(x = Longitude, y = Latitude, color = prelim.period)) +
-  coord_sf(xlim = c(-124.485, -124.46), ylim = c(42.6855, 42.70))
+  geom_point(data = prelim_periods_Dung, mapping = aes(x = Longitude, y = Latitude, color = prelim.period), size = 3) +
+  transition_time(Date.time.UTC) +
+  labs(title = "Time: {frame_time}") +
+  coord_sf(xlim = c(-124.485, -124.47), ylim = c(42.69, 42.698))
