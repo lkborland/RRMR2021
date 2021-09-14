@@ -254,7 +254,7 @@ plot_dat_China <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "China"))
 plot_dat_Dung <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness")) %>% tidyr::drop_na(Sensor.Value)
 plot_dat_Ling <- ex_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
 
-#ggploting example by species for accelerometer data: highlight 6/10-12
+#ggploting example by species for accelerometer data: highlight preliminary dates for survey passes
 #PRELIMINARY - tell R the time range of seismic survey
 prelim_start <- ymd_hms("2021-06-10 00:00:01")
 prelim_end <- ymd_hms("2021-06-12 23:59:59")
