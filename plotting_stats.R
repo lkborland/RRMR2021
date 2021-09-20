@@ -24,3 +24,42 @@ ggplot(data = dung_out, aes(x=Date.time.UTC, y=Sensor.Value, color=survey.period
 ggplot(data = ling_out, aes(x=Date.time.UTC, y=Sensor.Value, color=survey.period)) + geom_point()
 
 table(periods_BlackR$Latitude)
+
+#create variables of counts by period to use in discrete hist to visualize 
+#the amount of detections in periods of noise vs no noise
+countper_BlackR <- table(periods_BlackR$survey.period)
+countper_ChinaR <- table(periods_ChinaR$survey.period)
+countper_Dungeness <- table(periods_Dungeness$survey.period)
+countper_Lingcod <- table(periods_Lingcod$survey.period)
+
+#bar plots of counts by period
+ggplot(periods_BlackR, aes(x=survey.period)) + 
+  geom_bar() +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  labs(x = "Period of survey", y = "Number of detection events", title = "Black Rockfish Detections by Period",
+       caption = "Preliminary analyses")
+
+ggplot(periods_ChinaR, aes(x=survey.period)) + 
+  geom_bar() +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  labs(x = "Period of survey", y = "Number of detection events", title = "China Rockfish Detections by Period",
+       caption = "Preliminary analyses")
+
+ggplot(periods_Dungeness, aes(x=survey.period)) + 
+  geom_bar() +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  labs(x = "Period of survey", y = "Number of detection events", title = "Dungeness Detections by Period",
+       caption = "Preliminary analyses")
+
+ggplot(periods_Lingcod, aes(x=survey.period)) + 
+  geom_bar() +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  labs(x = "Period of survey", y = "Number of detection events", title = "Lingcod Detections by Period",
+       caption = "Preliminary analyses")
+
+#bar plots of NA counts by period
+ggplot(periods_BlackR, aes(x=survey.period)) + 
+  geom_bar() +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  labs(x = "Period of survey", y = "Number of detection events", title = "Black Rockfish Detections by Period",
+       caption = "Preliminary analyses")
