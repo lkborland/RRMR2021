@@ -357,8 +357,8 @@ ex_plot_Lingcod <- ggplot(dat_Lingcod, aes(Date.time.UTC, Sensor.Value, color = 
 
 #example plotting looking at other estimated timeframes of seismic survey booms
 #variables containing days of preliminary seismic boom detections
-June16_start <- ymd_hms("2021-06-16 14:40:00")
-June16_end <- ymd_hms("2021-06-16 15:00:00")
+June16_start <- ymd_hms("2021-06-16 00:00:01")
+June16_end <- ymd_hms("2021-06-16 23:59:59")
 
 June17_start <- ymd_hms("2021-06-17 00:00:01")
 June17_end <- ymd_hms("2021-06-17 23:59:59")
@@ -366,47 +366,41 @@ June17_end <- ymd_hms("2021-06-17 23:59:59")
 June18_start <- ymd_hms("2021-06-18 00:00:01")
 June18_end <- ymd_hms("2021-06-18 23:59:59")
 
+July11_end <- ymd_hms("2021-07-11 23:59:59")
+
 
 #adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
 periods_BlackR <- dat_BlackR %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "Before",
                                                                   Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
                                                                   Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
                                                                   Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
-                                                                  Date.time.UTC > June16_end & Date.time.UTC < June17_start ~ "June 16-17",
                                                                   Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
-                                                                  Date.time.UTC > June17_end & Date.time.UTC < June18_start ~ "June 17-18",
                                                                   Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
-                                                                  Date.time.UTC > June18_end ~ "After June 18"))
+                                                                  Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "After June 18"))
 
 periods_ChinaR <- dat_ChinaR %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "Before",
                                                                   Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
                                                                   Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
                                                                   Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
-                                                                  Date.time.UTC > June16_end & Date.time.UTC < June17_start ~ "June 16-17",
                                                                   Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
-                                                                  Date.time.UTC > June17_end & Date.time.UTC < June18_start ~ "June 17-18",
                                                                   Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
-                                                                  Date.time.UTC > June18_end ~ "After June 18"))
+                                                                  Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "After June 18"))
 
 periods_Dungeness <- dat_Dungeness %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "Before",
                                                                         Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
                                                                         Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
                                                                         Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
-                                                                        Date.time.UTC > June16_end & Date.time.UTC < June17_start ~ "June 16-17",
                                                                         Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
-                                                                        Date.time.UTC > June17_end & Date.time.UTC < June18_start ~ "June 17-18",
                                                                         Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
-                                                                        Date.time.UTC > June18_end ~ "After June 18"))
+                                                                        Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "After June 18"))
 
 periods_Lingcod <- dat_Lingcod %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "Before",
                                                                     Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
                                                                     Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
                                                                     Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
-                                                                    Date.time.UTC > June16_end & Date.time.UTC < June17_start ~ "June 16-17",
                                                                     Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
-                                                                    Date.time.UTC > June17_end & Date.time.UTC < June18_start ~ "June 17-18",
                                                                     Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
-                                                                    Date.time.UTC > June18_end ~ "After June 18"))
+                                                                    Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "After June 18"))
 
 
 #convert to posixct time type
@@ -426,31 +420,52 @@ periods_Lingcod$TSR <- difftime(periods_Lingcod$Date.time.UTC, periods_Lingcod$t
 
 #create violin plot of preliminary Dungeness crab data across periods for visualization of acceleration values
 # Violin plot with trimmed tails and adding median points as data is skewed (mean inappropriate)
+
+#set up labeling each plot with counts
+nlabels_D <- table(periods_Dungeness$survey.period)
+
+
+#  To create the median labels, you can use by
+#meds <- c(by(mtcars$mpg, mtcars$cyl, median))
+
+ggplot(mtcars, aes(factor(cyl), mpg, label=rownames(mtcars))) +
+  geom_boxplot(fill = "grey80", colour = "#3366FF") + 
+  geom_text(data = data.frame(), aes(x = names(meds) , y = meds, 
+                                     label = paste("n =", nlabels)))
+
 violin_Dungeness <- ggplot(periods_Dungeness, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
-  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 17", "June 18", "After June 18")) +
   labs(x = "Period of survey", y = "Acceleration values", title = "Dungeness Crab Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
 violin_Dungeness
 
+#data = periods_Dungeness %>% group_by(survey.period) %>% count()
+
 violin_Lingcod <- ggplot(periods_Lingcod, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
-  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 17", "June 18", "After June 18")) +
   labs(x = "Period of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
 violin_Lingcod
 
 violin_BlackR <- ggplot(periods_BlackR, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
-  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 17", "June 18", "After June 18")) +
   labs(x = "Period of survey", y = "Acceleration values", title = "Black Rockfish Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
 violin_BlackR
 
 violin_ChinaR <- ggplot(periods_ChinaR, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
-  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
+  scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 17", "June 18", "After June 18")) +
   labs(x = "Period of survey", y = "Acceleration values", title = "China Rockfish Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
 violin_ChinaR
+
+####################
+#create example plotting for all accelerometer data for all species
+ex_plot <- ggplot(plot_dat, aes(Date.time.UTC, Sensor.Value, color = Tag.Destination)) + 
+  geom_point()
+ex_plot + facet_grid( ~ .Tag.Destination)
 
