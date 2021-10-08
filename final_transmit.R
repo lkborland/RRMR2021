@@ -16,123 +16,155 @@ animal_transmit <- select(tagsheet, Transmitter, Tag.Destination)
 #Assign prelim transmitter (animal) logs to variables in the environment
 A_12048 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12048.csv", 
                               na.strings = c("Sensor Fault"))) %>%
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12049 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12049.csv", 
                               na.strings = c("Sensor Fault"))) %>%
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12050 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12050.csv", 
                               na.strings = c("Sensor Fault"))) %>%
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12051 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12051.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12052 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12052.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12053 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12053.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12054 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12054.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12055 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12055.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12056 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12056.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12057 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12057.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12058<- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12058.csv", 
                              na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12059 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12059.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12060 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12060.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12061 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12061.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12062 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12062.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12063 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12063.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12064 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12064.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12065 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12065.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12066 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12066.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12067 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12067.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12068 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12068.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12069 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12069.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12070 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12070.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12071 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12071.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12072 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12072.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12073 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12073.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12074 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12074.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12075 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12075.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
 
 A_12076 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12076.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "acceleration")
 
 A_12077 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12077.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  mutate(tag.type = "depth")
+
+
 
 A_13249 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13249.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
@@ -324,7 +356,8 @@ A_comb_2 <- left_join(A_comb_1, animal_transmit, by = "Transmitter")
 
 
 #Select out species and create separate tibbles for visualization
-dat_BlackR <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Black"))
+dat_BlackR_accel <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Black")) %>% filter(str_detect(tag.type, "acceleration"))
+dat_BlackR_depth <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Black")) %>% filter(str_detect(tag.type, "depth"))
 dat_ChinaR <- A_comb_2 %>% filter(str_detect(Tag.Destination, "China"))
 dat_Dungeness <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness")) #%>% tidyr::drop_na(Sensor.Value)
 dat_Lingcod <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
@@ -335,7 +368,7 @@ dat_Lingcod <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
 June11_start <- ymd_hms("2021-06-11 00:00:01")
 June11_end <- ymd_hms("2021-06-11 23:59:59")
 
-ex_plot_BlackR <- ggplot(dat_BlackR, aes(Date.time.UTC, Sensor.Value)) + 
+ex_plot_BlackR <- ggplot(dat_BlackR_accel, aes(Date.time.UTC, Sensor.Value)) + 
   geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) + 
   labs(x = "Time", y = "Acceleration values", title = "Black Rockfish Acceleration Over Time", color="Transmitter",
        caption = "Preliminary analyses")
@@ -370,13 +403,22 @@ July11_end <- ymd_hms("2021-07-11 23:59:59")
 
 
 #adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
-periods_BlackR <- dat_BlackR %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "May 20-June 10",
+periods_BlackR_accel <- dat_BlackR_accel %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "May 20-June 10",
                                                                   Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
                                                                   Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
                                                                   Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
                                                                   Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
                                                                   Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
                                                                   Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "June 19-July 11"))
+
+periods_BlackR_depth <- dat_BlackR_depth %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "May 20-June 10",
+                                                                              Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
+                                                                              Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
+                                                                              Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
+                                                                              Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
+                                                                              Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
+                                                                              Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "June 19-July 11"))
+
 
 periods_ChinaR <- dat_ChinaR %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "May 20-June 10",
                                                                   Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
@@ -418,6 +460,12 @@ periods_Dungeness$TSR <- difftime(periods_Dungeness$Date.time.UTC, periods_Dunge
 periods_Lingcod$TSR <- difftime(periods_Lingcod$Date.time.UTC, periods_Lingcod$time.min, units = "mins")
 
 
+#observe # of times and which individuals were detected during each periods
+table(periods_Dungeness$Transmitter, periods_Dungeness$survey.period)
+table(periods_Lingcod$Transmitter, periods_Lingcod$survey.period)
+table(periods_BlackR_accel$Transmitter, periods_BlackR_accel$survey.period)
+table(periods_ChinaR$Transmitter, periods_ChinaR$survey.period)
+
 #create violin plot of preliminary Dungeness crab data across periods for visualization of acceleration values
 # Violin plot with trimmed tails and adding median points as data is skewed (mean inappropriate)
 
@@ -449,12 +497,20 @@ violin_Lingcod <- ggplot(periods_Lingcod, aes(x=survey.period, y=Sensor.Value, f
        caption = "Preliminary analyses")
 violin_Lingcod
 
-violin_BlackR <- ggplot(periods_BlackR, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
+violin_BlackR_accel <- ggplot(periods_BlackR_accel, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
   scale_x_discrete(limits=c("May 20-June 10", "June 11", "June 12-16", "June 16", "June 17", "June 18", "June 19-July 11")) +
   labs(x = "Period of survey", y = "Acceleration values", title = "Black Rockfish Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
-violin_BlackR
+violin_BlackR_accel
+
+violin_BlackR_depth <- ggplot(periods_BlackR_depth, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
+  geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  scale_x_discrete(limits=c("May 20-June 10", "June 11", "June 12-16", "June 16", "June 17", "June 18", "June 19-July 11")) +
+  labs(x = "Period of survey", y = "Descent values", title = "Black Rockfish Vertical Movement by Period", fill="Period",
+       caption = "Preliminary analyses")
+violin_BlackR_depth
+
 
 violin_ChinaR <- ggplot(periods_ChinaR, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
