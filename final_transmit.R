@@ -507,8 +507,8 @@ violin_BlackR_accel
 violin_BlackR_depth <- ggplot(periods_BlackR_depth, aes(x=survey.period, y=Sensor.Value, fill=survey.period)) + 
   geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
   scale_x_discrete(limits=c("May 20-June 10", "June 11", "June 12-16", "June 16", "June 17", "June 18", "June 19-July 11")) +
-  labs(x = "Period of survey", y = "Descent values", title = "Black Rockfish Vertical Movement by Period", fill="Period",
-       caption = "Preliminary analyses")
+  labs(x = "Period of survey", y = "Depth (m)", title = "Black Rockfish Depth by Period", fill="Period",
+       caption = "Preliminary analyses") + scale_y_reverse()
 violin_BlackR_depth
 
 
@@ -525,3 +525,7 @@ ex_plot <- ggplot(plot_dat, aes(Date.time.UTC, Sensor.Value, color = Tag.Destina
   geom_point()
 ex_plot + facet_grid( ~ .Tag.Destination)
 
+
+
+#Lingcod quick statistics
+t.test(Sensor.Value ~ survey.period, alternative = "two.sided", data = periods_Lingcod)
