@@ -529,3 +529,5 @@ ex_plot + facet_grid( ~ .Tag.Destination)
 
 #Lingcod quick statistics
 t.test(Sensor.Value ~ survey.period, alternative = "two.sided", data = periods_Lingcod)
+
+
