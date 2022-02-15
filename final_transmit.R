@@ -5,6 +5,7 @@ library(gghighlight)
 library(rstatix)
 library(lme4)
 library(gamm4)
+library(car)
 
 #Upload tagsheet
 tagsheet <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\RRMRTagSheet.csv")) %>%
@@ -359,14 +360,14 @@ A_comb_2 <- left_join(A_comb_1, animal_transmit, by = "Transmitter")
 dat_BlackR_accel <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Black")) %>% filter(str_detect(tag.type, "acceleration"))
 dat_BlackR_depth <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Black")) %>% filter(str_detect(tag.type, "depth"))
 dat_ChinaR <- A_comb_2 %>% filter(str_detect(Tag.Destination, "China"))
-dat_Dungeness <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness")) #%>% tidyr::drop_na(Sensor.Value)
+dat_Dungeness <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Dungeness"))
 dat_Lingcod <- A_comb_2 %>% filter(str_detect(Tag.Destination, "Lingcod"))
 
 
 #ggploting example by species for accelerometer data: highlight preliminary dates for survey passes
 #PRELIMINARY - tell R the time range of seismic survey
-June11_start <- ymd_hms("2021-06-11 00:00:01")
-June11_end <- ymd_hms("2021-06-11 23:59:59")
+June11_start <- ymd_hms("2021-06-11 00:00:01", tz = "US/Pacific")
+June11_end <- ymd_hms("2021-06-11 23:59:59", tz = "US/Pacific")
 
 ex_plot_BlackR <- ggplot(dat_BlackR_accel, aes(Date.time.UTC, Sensor.Value)) + 
   geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) + 
@@ -390,16 +391,16 @@ ex_plot_Lingcod <- ggplot(dat_Lingcod, aes(Date.time.UTC, Sensor.Value, color = 
 
 #example plotting looking at other estimated timeframes of seismic survey booms
 #variables containing days of preliminary seismic boom detections
-June16_start <- ymd_hms("2021-06-16 00:00:01")
-June16_end <- ymd_hms("2021-06-16 23:59:59")
+June16_start <- ymd_hms("2021-06-16 00:00:01", tz = "US/Pacific")
+June16_end <- ymd_hms("2021-06-16 23:59:59", tz = "US/Pacific")
 
-June17_start <- ymd_hms("2021-06-17 00:00:01")
-June17_end <- ymd_hms("2021-06-17 23:59:59")
+June17_start <- ymd_hms("2021-06-17 00:00:01", tz = "US/Pacific")
+June17_end <- ymd_hms("2021-06-17 23:59:59", tz = "US/Pacific")
 
-June18_start <- ymd_hms("2021-06-18 00:00:01")
-June18_end <- ymd_hms("2021-06-18 23:59:59")
+June18_start <- ymd_hms("2021-06-18 00:00:01", tz = "US/Pacific")
+June18_end <- ymd_hms("2021-06-18 23:59:59", tz = "US/Pacific")
 
-July11_end <- ymd_hms("2021-07-11 23:59:59")
+July11_end <- ymd_hms("2021-07-11 23:59:59", tz = "US/Pacific")
 
 
 #adding "period" categorizations to data (need to bin as the resolution is too fine to be visible on a plot)
@@ -465,6 +466,168 @@ table(periods_Dungeness$Transmitter, periods_Dungeness$survey.period)
 table(periods_Lingcod$Transmitter, periods_Lingcod$survey.period)
 table(periods_BlackR_accel$Transmitter, periods_BlackR_accel$survey.period)
 table(periods_ChinaR$Transmitter, periods_ChinaR$survey.period)
+
+
+#count number of individuals detected for each period
+#Dungeness
+periods_Dungeness %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #14
+periods_Dungeness %>% filter(survey.period == "June 11") %>% count(Transmitter) #4
+periods_Dungeness %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #5
+periods_Dungeness %>% filter(survey.period == "June 16") %>% count(Transmitter) #3
+periods_Dungeness %>% filter(survey.period == "June 17") %>% count(Transmitter) #3
+periods_Dungeness %>% filter(survey.period == "June 18") %>% count(Transmitter) #3
+periods_Dungeness %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #3
+
+#Lingcod
+periods_Lingcod %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #14 - look at position data - shallow water or leave to north/south?? add covariates to model
+periods_Lingcod %>% filter(survey.period == "June 11") %>% count(Transmitter) #3
+periods_Lingcod %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #6
+periods_Lingcod %>% filter(survey.period == "June 16") %>% count(Transmitter) #5
+periods_Lingcod %>% filter(survey.period == "June 17") %>% count(Transmitter) #5
+periods_Lingcod %>% filter(survey.period == "June 18") %>% count(Transmitter)#4
+periods_Lingcod %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #10 -
+
+#Black Rockfish accel
+periods_BlackR_accel %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #15
+periods_BlackR_accel %>% filter(survey.period == "June 11") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 16") %>% count(Transmitter) #13
+periods_BlackR_accel %>% filter(survey.period == "June 17") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 18") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #14
+#Black Rockfish depth
+periods_BlackR_depth %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #15
+periods_BlackR_depth %>% filter(survey.period == "June 11") %>% count(Transmitter) #13
+periods_BlackR_depth %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #14
+periods_BlackR_depth %>% filter(survey.period == "June 16") %>% count(Transmitter) #13
+periods_BlackR_depth %>% filter(survey.period == "June 17") %>% count(Transmitter) #14
+periods_BlackR_depth %>% filter(survey.period == "June 18") %>% count(Transmitter) #14
+periods_BlackR_depth %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #14
+
+#China Rockfish
+periods_ChinaR %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #13
+periods_ChinaR %>% filter(survey.period == "June 11") %>% count(Transmitter) #8
+periods_ChinaR %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #10
+periods_ChinaR %>% filter(survey.period == "June 16") %>% count(Transmitter) #10
+periods_ChinaR %>% filter(survey.period == "June 17") %>% count(Transmitter) #11
+periods_ChinaR %>% filter(survey.period == "June 18") %>% count(Transmitter) #9
+periods_ChinaR %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #10
+
+
+#create vector of coarse survey times
+survey_times <- c(June11_start, June11_end, June16_start, June16_end, June17_start, June17_end, June18_start, June18_end, 
+                  July11_end)
+
+##Evaluate potential mortality events / dropped tags
+ggplot(periods_Dungeness, aes(Date.time.UTC, Sensor.Value)) + 
+  geom_point() + facet_grid(rows = vars(Transmitter)) +
+  labs(x = "Time", y = "Acceleration values", title = "Dungeness acceleration over time", 
+       caption = "Preliminary analyses")
+
+ggplot(periods_Lingcod, aes(Date.time.UTC, Sensor.Value)) + 
+  geom_point() + facet_grid(rows = vars(Transmitter)) +
+  labs(x = "Time", y = "Acceleration values", title = "Lingcod acceleration over time", 
+       caption = "Preliminary analyses")
+
+ggplot(periods_BlackR_accel, aes(Date.time.UTC, Sensor.Value)) + 
+  geom_point() + facet_grid(rows = vars(Transmitter)) +
+  labs(x = "Time", y = "Acceleration values", title = "Black rockfish acceleration over time", 
+       caption = "Preliminary analyses")
+
+ggplot(periods_ChinaR, aes(Date.time.UTC, Sensor.Value)) + 
+  geom_point() + facet_grid(rows = vars(Transmitter)) +
+  labs(x = "Time", y = "Acceleration values", title = "China rockfish acceleration over time", 
+       caption = "Preliminary analyses")
+
+#remove observations of transmitters with too low sample size/observations
+##China R: 13265
+periods_ChinaR <- periods_ChinaR %>% filter(!(Transmitter == "A69-9007-13265"))
+
+##Black R accel: 12072
+periods_BlackR_accel <- periods_BlackR_accel %>% filter(!(Transmitter == "A69-9007-12072"))
+
+##Lingcod: 13250, 13262
+periods_Lingcod <- periods_Lingcod %>% filter(!(Transmitter == "A69-9007-13250" | Transmitter == "A69-9007-13262"))
+
+##Dungeness: ?????
+periods_Dungeness <- periods_Dungeness %>% filter(Date.time.UTC <= July11_end)
+
+
+
+##vector of generic sunrise to sunset
+diurnal_night <- ymd_hms(c("2021-05-20 20:30:00", "2021-05-21 05:45:00"), tz = "US/Pacific")
+diurnal_night <- as.POSIXct(diurnal_night)
+diurnal_night <- with_tz(diurnal_night, tzone = "UTC")
+diurnal_night
+
+
+##plot average acceleration over time, overlay shaded periods as "night" and dotted line as beginning of seismic survey period
+Dungeness_before <- periods_Dungeness %>% filter(survey.period == "May 20-June 10")
+Dungeness_during <- periods_Dungeness %>% filter(survey.period == "June 11" | survey.period == "June 12-16" 
+                                                           | survey.period == "June 16" | survey.period == "June 17" 
+                                                           | survey.period == "June 18")
+Dungeness_after <- periods_Dungeness %>% filter(survey.period == "June 19-July 11")
+
+
+periods_Dungeness <- periods_Dungeness %>% mutate(coarse.period = case_when(survey.period == "May 20-June 10" ~ "Before",
+                                                                            survey.period == "June 11" | survey.period == "June 12-16" 
+                                                                            | survey.period == "June 16" | survey.period == "June 17" 
+                                                                            | survey.period == "June 18" ~ "During",
+                                                                            survey.period == "June 19-July 11" ~ "After"))
+
+#convert all times to same day to evaluate daily movement
+timeperiod_sameday <- as.POSIXct(Dungeness_before$Date.time.UTC, format="%H:%M:%S")
+
+
+ggplot(periods_Dungeness, aes(x = Date.time.UTC, y = Sensor.Value)) + 
+  geom_area(colour = "light blue") + geom_vline(xintercept = survey_times, linetype = 2) +
+  annotate("rect", xmin = diurnal_night[1], xmax = diurnal_night[2], ymin = 0, alpha = .2) +
+  labs(x = "Time", y = "Acceleration values", title = "Dungeness acceleration over time", 
+       caption = "Preliminary analyses")
+
+#gghighlight(max(Temp) > 93, label_key = Month)
+# facet_grid(survey.period ~ .) + 
+#gghighlight(hms(Date.time.UTC) >= "20:30:00" & hms(Date.time.UTC) <= "05:45:00")
+#annotate("rect", xmin = "20:30:00", xmax = "05:45:00", ymin = 0, ymax = 4.5, alpha = .1, fill = "gray")
+#annotate("rect", xmin = 1950, xmax = 1980, ymin = -1, ymax = 1, alpha = .1,fill = "blue")
+
+##assess number of receivers each species detected on 
+length(unique(periods_Lingcod$Receiver))
+length(unique(periods_Dungeness$Receiver))
+length(unique(periods_ChinaR$Receiver))
+length(unique(periods_BlackR_accel$Receiver))
+
+
+#Adding Port Orford CTD data
+## import file
+Port_O_SBE <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE_data.csv")
+
+##use data points at depth only - filter out those with depths smaller than 30m
+Port_O_SBE <- Port_O_SBE %>% filter(DepSM > 30)
+
+##rename columns for ease of use
+Port_O_SBE <- Port_O_SBE %>% rename(TempC = Tv290C) %>% rename(Salinity = Sal00) %>% rename(DepthM = DepSM)
+
+##convert time to time object to tell R data is time in PDT
+Port_O_SBE <- Port_O_SBE %>% unite("SBE_time", mm.dd.yyyy:hh.mm.ss, sep = " ", remove = FALSE)
+
+##change timezone of data (same point in time, convert to UTC from PDT to merge with transmitter data)
+Port_O_SBE <- Port_O_SBE %>% strptime(format = "%m/%d/%Y %H:%M:%S", tz = "PDT")
+
+##join SBE data to transmitter sensor dataset 
+#### NEED TIME ZONE FOR DAY.TIME INFO
+
+
+
+
+
+
+
+#individual fish evaluate - 8, 9, 10, 13, 14
+ggplot(A_12062, aes(Date.time.UTC, Sensor.Value)) + 
+  geom_point() +
+  labs(x = "Time", y = "Acceleration values", title = "Black rockfish acceleration over time", 
+       caption = "Preliminary analyses")
 
 #create violin plot of preliminary Dungeness crab data across periods for visualization of acceleration values
 # Violin plot with trimmed tails and adding median points as data is skewed (mean inappropriate)
