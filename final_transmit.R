@@ -555,10 +555,15 @@ periods_Dungeness <- periods_Dungeness %>% filter(Date.time.UTC <= July11_end)
 
 
 ##vector of generic sunrise to sunset
-diurnal_night <- ymd_hms(c("2021-05-20 20:30:00", "2021-05-21 05:45:00"), tz = "US/Pacific")
-diurnal_night <- as.POSIXct(diurnal_night)
-diurnal_night <- with_tz(diurnal_night, tzone = "UTC")
-diurnal_night
+Port_O_Sun <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\NOAA Port Orford tides\\NOAA_PortO_NightDay2021.csv")
+Port_O_Sun <- Port_O_Sun %>% rename(Date = ï..Date)
+Port_O_Sun <- Port_O_Sun %>% unite("Sunrise.datetime", Date:Sunrise.Time, sep = " ", remove = FALSE) %>% 
+                              unite("Sunset.datetime", c(Date, Sunset.Time), sep = " ", remove = FALSE)
+Port_O_Sun$Sunrise.datetime <- as.POSIXct(Port_O_Sun$Sunrise.datetime, format = "%m/%d/%Y %H:%M")
+Port_O_Sun$Sunset.datetime <- as.POSIXct(Port_O_Sun$Sunset.datetime, format = "%m/%d/%Y %H:%M")
+Port_O_Sun$Sunrise.datetime <- with_tz(Port_O_Sun$Sunrise.datetime, tzone = "US/Pacific")
+Port_O_Sun$Sunset.datetime <- with_tz(Port_O_Sun$Sunset.datetime, tzone = "US/Pacific")
+
 
 
 ##plot average acceleration over time, overlay shaded periods as "night" and dotted line as beginning of seismic survey period
@@ -574,6 +579,11 @@ periods_Dungeness <- periods_Dungeness %>% mutate(coarse.period = case_when(surv
                                                                             | survey.period == "June 16" | survey.period == "June 17" 
                                                                             | survey.period == "June 18" ~ "During",
                                                                             survey.period == "June 19-July 11" ~ "After"))
+
+periods_Dungeness <- periods_Dungeness %>% mutate(day.night = 
+                                                    case_when(between(Date.time.UTC, Port_O_Sun$Sunset.datetime, Port_O_Sun$Sunrise.datetime) ~ "Night",
+                                                              between(Date.time.UTC, Port_O_Sun$Sunrise.datetime, Port_O_Sun$Sunset.datetime) ~ "Day"))
+
 
 #convert all times to same day to evaluate daily movement
 timeperiod_sameday <- as.POSIXct(Dungeness_before$Date.time.UTC, format="%H:%M:%S")

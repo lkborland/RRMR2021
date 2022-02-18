@@ -32,7 +32,7 @@ periods_Dungeness$survey.period <- factor(periods_Dungeness$survey.period, level
 
 
 periods_Dungeness$coarse.period <- factor(periods_Dungeness$coarse.period, levels = coarse.period.lvl[c(1:3)])
-
+periods_Dungeness$day.night <- factor(periods_Dungeness$day.night)
 
 
 #mixed effects model for all values
