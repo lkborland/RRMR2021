@@ -583,12 +583,26 @@ periods_Dungeness <- periods_Dungeness %>% mutate(coarse.period = case_when(surv
 
 #### FIX THIS
 periods_Dungeness <- periods_Dungeness %>% mutate(day.night = 
-                                                    case_when(Date.time.UTC, Port_O_Sun$Sunset.datetime, Port_O_Sun$Sunrise.datetime ~ "Night",
-                                                              Date.time.UTC, Port_O_Sun$Sunrise.datetime, Port_O_Sun$Sunset.datetime ~ "Day"))
+                                                    case_when(Date.time.UTC >= Port_O_Sun$Sunrise.datetime & Date.time.UTC < Port_O_Sun$Sunset.datetime ~ "Day",
+                                                              TRUE ~ "Night"))
 
+ex_date <- "5/20/2021"
+subset(Port_O_Sun, Date == ex_date)
+Port_O_Sun[Port_O_Sun$Date == ex_date, ]
+
+case_day_night <- function(date, time) {
+  case_when(
+    height > 200 | mass > 200 ~ "large",
+    species == "Droid"        ~ "robot",
+    TRUE                      ~ "other"
+  )
+}
 
 
 #add in fine-scale noise data from Integral NoiseSpotter
+#data on rms sound pressure levels, peak pressure in 30 s windows, 
+#and the cumulative exposure levels in 30 s windows. The three files correspond to the three sensors located 35 cm, 
+#50 cm and 70 cm above the sea bed.
 NS35cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40B_35cmAB.csv")
 NS35cm$Time <- as.POSIXct(NS35cm$Time, format = "%Y-%m-%d %H:%M:%S")
 NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
