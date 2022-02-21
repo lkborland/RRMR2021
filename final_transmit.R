@@ -580,10 +580,26 @@ periods_Dungeness <- periods_Dungeness %>% mutate(coarse.period = case_when(surv
                                                                             | survey.period == "June 18" ~ "During",
                                                                             survey.period == "June 19-July 11" ~ "After"))
 
-periods_Dungeness <- periods_Dungeness %>% mutate(day.night = 
-                                                    case_when(between(Date.time.UTC, Port_O_Sun$Sunset.datetime, Port_O_Sun$Sunrise.datetime) ~ "Night",
-                                                              between(Date.time.UTC, Port_O_Sun$Sunrise.datetime, Port_O_Sun$Sunset.datetime) ~ "Day"))
 
+#### FIX THIS
+periods_Dungeness <- periods_Dungeness %>% mutate(day.night = 
+                                                    case_when(Date.time.UTC, Port_O_Sun$Sunset.datetime, Port_O_Sun$Sunrise.datetime ~ "Night",
+                                                              Date.time.UTC, Port_O_Sun$Sunrise.datetime, Port_O_Sun$Sunset.datetime ~ "Day"))
+
+
+
+#add in fine-scale noise data from Integral NoiseSpotter
+NS35cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40B_35cmAB.csv")
+NS35cm$Time <- as.POSIXct(NS35cm$Time, format = "%Y-%m-%d %H:%M:%S")
+NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+
+NS50cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file100_50cmAB.csv")
+NS50cm$Time <- as.POSIXct(NS50cm$Time, format = "%Y-%m-%d %H:%M:%S")
+NS50cm$Time <- with_tz(NS50cm$Time, tzone = "US/Pacific")
+
+NS70cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40A_70cmAB.csv") %>% rename(Time = ï..Time)
+NS70cm$Time <- as.POSIXct(NS70cm$Time, format = "%Y-%m-%d %H:%M:%S")
+NS70cm$Time <- with_tz(NS70cm$Time, tzone = "US/Pacific")
 
 #convert all times to same day to evaluate daily movement
 timeperiod_sameday <- as.POSIXct(Dungeness_before$Date.time.UTC, format="%H:%M:%S")
