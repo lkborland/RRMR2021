@@ -1,3 +1,78 @@
+ex_plot_BlackR <- ggplot(dat_BlackR_accel, aes(Date.time.UTC, Sensor.Value)) + 
+  geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) + 
+  labs(x = "Time", y = "Acceleration values", title = "Black Rockfish Acceleration Over Time", color="Transmitter",
+       caption = "Preliminary analyses")
+
+ex_plot_ChinaR <- ggplot(dat_ChinaR, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+  geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) + 
+  labs(x = "Time", y = "Acceleration values", title = "China Rockfish Acceleration Over Time", color="Transmitter",
+       caption = "Preliminary analyses")
+
+ex_plot_Dungeness <- ggplot(dat_Dungeness, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+  geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) + 
+  labs(x = "Time", y = "Acceleration values", title = "Dungeness Crab Acceleration Over Time", color="Transmitter",
+       caption = "Preliminary analyses")
+
+ex_plot_Lingcod <- ggplot(dat_Lingcod, aes(Date.time.UTC, Sensor.Value, color = Transmitter)) + 
+  geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) +
+  labs(x = "Time", y = "Acceleration values", title = "Lingcod Acceleration Over Time", color="Transmitter",
+       caption = "Preliminary analyses")
+
+
+#observe # of times and which individuals were detected during each periods
+table(periods_Dungeness$Transmitter, periods_Dungeness$survey.period)
+table(periods_Lingcod$Transmitter, periods_Lingcod$survey.period)
+table(periods_BlackR_accel$Transmitter, periods_BlackR_accel$survey.period)
+table(periods_ChinaR$Transmitter, periods_ChinaR$survey.period)
+
+
+#count number of individuals detected for each period
+#Dungeness
+periods_Dungeness %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #14
+periods_Dungeness %>% filter(survey.period == "June 11") %>% count(Transmitter) #4
+periods_Dungeness %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #5
+periods_Dungeness %>% filter(survey.period == "June 16") %>% count(Transmitter) #3
+periods_Dungeness %>% filter(survey.period == "June 17") %>% count(Transmitter) #3
+periods_Dungeness %>% filter(survey.period == "June 18") %>% count(Transmitter) #3
+periods_Dungeness %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #3
+
+#Lingcod
+periods_Lingcod %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #14 - look at position data - shallow water or leave to north/south?? add covariates to model
+periods_Lingcod %>% filter(survey.period == "June 11") %>% count(Transmitter) #3
+periods_Lingcod %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #6
+periods_Lingcod %>% filter(survey.period == "June 16") %>% count(Transmitter) #5
+periods_Lingcod %>% filter(survey.period == "June 17") %>% count(Transmitter) #5
+periods_Lingcod %>% filter(survey.period == "June 18") %>% count(Transmitter)#4
+periods_Lingcod %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #10 -
+
+#Black Rockfish accel
+periods_BlackR_accel %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #15
+periods_BlackR_accel %>% filter(survey.period == "June 11") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 16") %>% count(Transmitter) #13
+periods_BlackR_accel %>% filter(survey.period == "June 17") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 18") %>% count(Transmitter) #14
+periods_BlackR_accel %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #14
+#Black Rockfish depth
+periods_BlackR_depth %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #15
+periods_BlackR_depth %>% filter(survey.period == "June 11") %>% count(Transmitter) #13
+periods_BlackR_depth %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #14
+periods_BlackR_depth %>% filter(survey.period == "June 16") %>% count(Transmitter) #13
+periods_BlackR_depth %>% filter(survey.period == "June 17") %>% count(Transmitter) #14
+periods_BlackR_depth %>% filter(survey.period == "June 18") %>% count(Transmitter) #14
+periods_BlackR_depth %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #14
+
+#China Rockfish
+periods_ChinaR %>% filter(survey.period == "May 20-June 10") %>% count(Transmitter) #13
+periods_ChinaR %>% filter(survey.period == "June 11") %>% count(Transmitter) #8
+periods_ChinaR %>% filter(survey.period == "June 12-16") %>% count(Transmitter) #10
+periods_ChinaR %>% filter(survey.period == "June 16") %>% count(Transmitter) #10
+periods_ChinaR %>% filter(survey.period == "June 17") %>% count(Transmitter) #11
+periods_ChinaR %>% filter(survey.period == "June 18") %>% count(Transmitter) #9
+periods_ChinaR %>% filter(survey.period == "June 19-July 11") %>% count(Transmitter) #10
+
+
+
 #evaluating residuals, outliers, etc. to further visualize structure of data before analyses
 
 #LM evaluate residuals

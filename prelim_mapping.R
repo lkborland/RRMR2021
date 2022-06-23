@@ -18,8 +18,11 @@ mapPortO <- ggplot(data = mapWorld) + geom_sf() +
             annotation_north_arrow(location = "bl", which_north = "true",
                                     pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
                                     style = north_arrow_fancy_orienteering()) +
-            geom_point(data = prelim_periods_Dung, mapping = aes(x = Longitude, y = Latitude), color = "cyan") +
-            coord_sf(xlim = c(-127, -120), ylim = c(42.5, 43))
+            coord_sf(xlim = c(-124.485, -124.43), ylim = c(42.67, 42.7))
+
+#+
+ #           geom_point(data = prelim_periods_Dung, mapping = aes(x = Longitude, y = Latitude), color = "cyan") +
+  #          
 
 #create animation over time of Dungeness crab detections (lat/long), color by period: render time ~5 min
 mapPortO <- ggplot(data = mapWorld) + geom_sf() + 
