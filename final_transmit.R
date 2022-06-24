@@ -556,30 +556,64 @@ periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(day.night = case_day_ni
 #and the cumulative exposure levels in 30 s windows. The three files correspond to the three sensors located 35 cm, 
 #50 cm and 70 cm above the sea bed.
 NS35cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40B_35cmAB.csv")
-NS35cm$Time <- as.POSIXct(NS35cm$Time, format = "%m/%d/%Y %H:%M")
+NS35cm$Time <- as.POSIXct(NS35cm$Time, format = "%m/%d/%Y %H:%M:%S")
 NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
 NS35cm <- NS35cm %>% rename(Date.time.UTC = Time)
+NS35cm$Date.time.UTC <- round_date(NS35cm$Date.time.UTC, "30 seconds")
 
 NS50cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file100_50cmAB.csv")
-NS50cm$Time <- as.POSIXct(NS50cm$Time, format = "%m/%d/%Y %H:%M:S")
+NS50cm$Time <- as.POSIXct(NS50cm$Time, format = "%m/%d/%Y %H:%M:%S")
 NS50cm$Time <- with_tz(NS50cm$Time, tzone = "US/Pacific")
 NS50cm <- NS50cm %>% rename(Date.time.UTC = Time)
+NS50cm$Date.time.UTC <- round_date(NS50cm$Date.time.UTC, "30 seconds")
 
 NS70cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40A_70cmAB.csv") %>% rename(Time = ï..Time)
-NS70cm$Time <- as.POSIXct(NS70cm$Time, format = "%m/%d/%Y %H:%M")
+NS70cm$Time <- as.POSIXct(NS70cm$Time, format = "%m/%d/%Y %H:%M:%S")
 NS70cm$Time <- with_tz(NS70cm$Time, tzone = "US/Pacific")
 NS70cm <- NS70cm %>% rename(Date.time.UTC = Time)
+NS70cm$Date.time.UTC <- round_date(NS70cm$Date.time.UTC, "30 seconds")
 
-#add noise levels (35cm) to dataset of movement metrics
-periods_Dungeness_noise <- full_join(periods_Dungeness, NS35cm, by = "Date.time.UTC")
-periods_Dungeness_noise <- full_join(periods_Dungeness_noise, NS50cm, by = "Date.time.UTC")
-periods_Dungeness_noise <- full_join(periods_Dungeness_noise, NS70cm, by = "Date.time.UTC")
+#combine noise data sets
+NSall <- full_join(NS35cm, NS50cm, by = "Date.time.UTC")
+NSall <- full_join(NSall, NS70cm, by = "Date.time.UTC")
 
 
+#round times in acceleration data sets to combine with Noise Spotter data
+periods_Dungeness$Date.time.UTC <- round_date(periods_Dungeness$Date.time.UTC, "30 seconds")
+periods_Lingcod$Date.time.UTC <- round_date(periods_Lingcod$Date.time.UTC, "30 seconds")
+periods_BlackR_accel$Date.time.UTC <- round_date(periods_BlackR_accel$Date.time.UTC, "30 seconds")
+periods_BlackR_depth$Date.time.UTC <- round_date(periods_BlackR_depth$Date.time.UTC, "30 seconds")
+periods_ChinaR$Date.time.UTC <- round_date(periods_ChinaR$Date.time.UTC, "30 seconds")
+
+
+#add noise levels to data sets of movement metrics, remove observations without noise data
+periods_Dungeness_noise <- inner_join(NSall, periods_Dungeness, by = "Date.time.UTC")
+periods_Lingcod_noise <- inner_join(NSall, periods_Lingcod, by = "Date.time.UTC")
+periods_BlackR_accel_noise <- inner_join(NSall, periods_BlackR_accel, by = "Date.time.UTC")
+periods_BlackR_depth_noise <- inner_join(NSall, periods_BlackR_depth, by = "Date.time.UTC")
+periods_ChinaR_noise <- inner_join(NSall, periods_ChinaR, by = "Date.time.UTC")
+
+#add Port Orford SBE data to data sets with sensor values
+Port_O_SBE <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE_data.csv")
+##use data points at depth only - filter out those with depths smaller than 30m
+Port_O_SBE <- Port_O_SBE %>% filter(DepSM > 30)
+##rename columns for ease of use
+Port_O_SBE <- Port_O_SBE %>% rename(TempC = Tv290C) %>% rename(Salinity = Sal00) %>% rename(DepthM = DepSM)
+##change timezone of data (same point in time, convert to UTC from PDT to merge with transmitter data)
+Port_O_SBE$Time <- as.POSIXct(Port_O_SBE$Time, format = "%m/%d/%Y %H:%M:%S")
+Port_O_SBE$Time <- with_tz(Port_O_SBE$Time, tzone = "US/Pacific")
+Port_O_SBE <- Port_O_SBE %>% rename("Date.time.UTC" = "SBE_time")
+
+
+
+NS35cm$Time <- as.POSIXct(NS35cm$Time, format = "%m/%d/%Y %H:%M:%S")
+NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+NS35cm <- NS35cm %>% rename(Date.time.UTC = Time)
+NS35cm$Date.time.UTC <- round_date(NS35cm$Date.time.UTC, "30 seconds")
 
 
 #convert all times to same day to evaluate daily movement
-timeperiod_sameday <- as.POSIXct(Dungeness_before$Date.time.UTC, format="%H:%M:%S")
+#timeperiod_sameday <- as.POSIXct(Dungeness_before$Date.time.UTC, format="%H:%M:%S")
 
 
 ggplot(periods_Dungeness, aes(x = Date.time.UTC, y = Sensor.Value)) + 
@@ -601,23 +635,14 @@ length(unique(periods_ChinaR$Receiver))
 length(unique(periods_BlackR_accel$Receiver))
 
 
-#Adding Port Orford CTD data
-## import file
-Port_O_SBE <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE_data.csv")
 
-##use data points at depth only - filter out those with depths smaller than 30m
-Port_O_SBE <- Port_O_SBE %>% filter(DepSM > 30)
 
-##rename columns for ease of use
-Port_O_SBE <- Port_O_SBE %>% rename(TempC = Tv290C) %>% rename(Salinity = Sal00) %>% rename(DepthM = DepSM)
 
-##convert time to time object to tell R data is time in PDT
-Port_O_SBE <- Port_O_SBE %>% unite("SBE_time", mm.dd.yyyy:hh.mm.ss, sep = " ", remove = FALSE)
 
-##change timezone of data (same point in time, convert to UTC from PDT to merge with transmitter data)
-Port_O_SBE$SBE_time <- as.POSIXct(Port_O_SBE$SBE_time, format = "%m/%d/%Y %H:%M:%S")
-Port_O_SBE$SBE_time <- with_tz(Port_O_SBE$SBE_time, tzone = "US/Pacific")
-Port_O_SBE <- Port_O_SBE %>% rename("Date.time.UTC" = "SBE_time")
+
+
+
+
 
 ##join SBE data to transmitter sensor dataset 
 periods_Dungeness_noise <- full_join(periods_Dungeness_noise, Port_O_SBE, by = "Date.time.UTC")

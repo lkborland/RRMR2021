@@ -40,26 +40,26 @@ periods_Dungeness$day.night <- factor(periods_Dungeness$day.night)
 
 
 #mixed effects model for all values
-acc_lmer_ChinaR <- lmer(Sensor.Value ~ survey.period + (1 | Transmitter), data = periods_ChinaR, REML = FALSE) #note REML here
+acc_lmer_ChinaR <- lmer(Sensor.Value ~ Peak.SPL_35cm + SEL_35cm + Peak.SPL_50cm + SEL_50cm + Peak.SPL_70cm + SEL_70cm + (1 | Transmitter), data = periods_ChinaR_noise, REML = FALSE) #note REML here
 summary(acc_lmer_ChinaR)
-emmeans(acc_lmer_ChinaR, list(pairwise ~ survey.period), adjust = "tukey")
+#emmeans(acc_lmer_ChinaR, list(pairwise ~ survey.period), adjust = "tukey")
 
 acc_lmer_BlackR <- lmer(Sensor.Value ~ survey.period + (1 | Transmitter), data = periods_BlackR_accel, REML = FALSE)
 summary(acc_lmer_BlackR)
-emmeans(acc_lmer_BlackR, list(pairwise ~ survey.period), adjust = "tukey")
+#emmeans(acc_lmer_BlackR, list(pairwise ~ survey.period), adjust = "tukey")
 
 acc_lmer_Lingcod <- lmer(Sensor.Value ~ survey.period + (1 | Transmitter), data = periods_Lingcod)
 summary(acc_lmer_Lingcod)
-emmeans(acc_lmer_Lingcod, list(pairwise ~ survey.period), adjust = "tukey")
+#emmeans(acc_lmer_Lingcod, list(pairwise ~ survey.period), adjust = "tukey")
 
 
 acc_lmer_Dungeness <- lmer(Sensor.Value ~ survey.period + (1 | Transmitter), data = periods_Dungeness)
 summary(acc_lmer_Dungeness)
-emmeans(acc_lmer_Dungeness, list(pairwise ~ survey.period), adjust = "tukey")
+#emmeans(acc_lmer_Dungeness, list(pairwise ~ survey.period), adjust = "tukey")
 
 acc_lmer_BlackR_d <- lmer(Sensor.Value ~ survey.period + (1 | Transmitter), data = periods_BlackR_depth, REML = FALSE)
 summary(acc_lmer_BlackR_d)
-emmeans(acc_lmer_BlackR_d, list(pairwise ~ survey.period), adjust = "tukey")
+#emmeans(acc_lmer_BlackR_d, list(pairwise ~ survey.period), adjust = "tukey")
   
 #ANOVA for p-values for the lmer models
 Anova(acc_lmer_ChinaR)
