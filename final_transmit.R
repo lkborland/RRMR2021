@@ -517,6 +517,22 @@ periods_Dungeness <- periods_Dungeness %>% mutate(coarse.period = case_when(surv
                                                                             | survey.period == "June 18" ~ "During",
                                                                             survey.period == "June 19-July 11" ~ "After"))
 
+periods_Lingcod <- periods_Lingcod %>% mutate(coarse.period = case_when(survey.period == "May 20-June 10" ~ "Before",
+                                                                            survey.period == "June 11" | survey.period == "June 12-16" 
+                                                                            | survey.period == "June 16" | survey.period == "June 17" 
+                                                                            | survey.period == "June 18" ~ "During",
+                                                                            survey.period == "June 19-July 11" ~ "After"))
+periods_BlackR_accel <- periods_BlackR_accel %>% mutate(coarse.period = case_when(survey.period == "May 20-June 10" ~ "Before",
+                                                                            survey.period == "June 11" | survey.period == "June 12-16" 
+                                                                            | survey.period == "June 16" | survey.period == "June 17" 
+                                                                            | survey.period == "June 18" ~ "During",
+                                                                            survey.period == "June 19-July 11" ~ "After"))
+periods_ChinaR <- periods_ChinaR %>% mutate(coarse.period = case_when(survey.period == "May 20-June 10" ~ "Before",
+                                                                            survey.period == "June 11" | survey.period == "June 12-16" 
+                                                                            | survey.period == "June 16" | survey.period == "June 17" 
+                                                                            | survey.period == "June 18" ~ "During",
+                                                                            survey.period == "June 19-July 11" ~ "After"))
+
 
 #### add other animals to this
 periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(detect_day = date(Date.time.UTC)) %>% 
@@ -524,6 +540,25 @@ periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(detect_day = date(Date.
 periods_Dungeness$detect_time <- as.POSIXct(periods_Dungeness$detect_time, format = "%H:%M:%S")
 date(periods_Dungeness$detect_time) <- today(tzone = "US/Pacific")
 
+periods_Lingcod <- periods_Lingcod %>% dplyr::mutate(detect_day = date(Date.time.UTC)) %>% 
+  dplyr::mutate(detect_time = hms::as_hms(Date.time.UTC))
+periods_Lingcod$detect_time <- as.POSIXct(periods_Lingcod$detect_time, format = "%H:%M:%S")
+date(periods_Lingcod$detect_time) <- today(tzone = "US/Pacific")
+
+periods_BlackR_accel <- periods_BlackR_accel %>% dplyr::mutate(detect_day = date(Date.time.UTC)) %>% 
+  dplyr::mutate(detect_time = hms::as_hms(Date.time.UTC))
+periods_BlackR_accel$detect_time <- as.POSIXct(periods_BlackR_accel$detect_time, format = "%H:%M:%S")
+date(periods_BlackR_accel$detect_time) <- today(tzone = "US/Pacific")
+
+periods_BlackR_depth <- periods_BlackR_depth %>% dplyr::mutate(detect_day = date(Date.time.UTC)) %>% 
+  dplyr::mutate(detect_time = hms::as_hms(Date.time.UTC))
+periods_BlackR_depth$detect_time <- as.POSIXct(periods_BlackR_depth$detect_time, format = "%H:%M:%S")
+date(periods_BlackR_depth$detect_time) <- today(tzone = "US/Pacific")
+
+periods_ChinaR <- periods_ChinaR %>% dplyr::mutate(detect_day = date(Date.time.UTC)) %>% 
+  dplyr::mutate(detect_time = hms::as_hms(Date.time.UTC))
+periods_ChinaR$detect_time <- as.POSIXct(periods_ChinaR$detect_time, format = "%H:%M:%S")
+date(periods_ChinaR$detect_time) <- today(tzone = "US/Pacific")
 
 
 ##example to evaluate function 
@@ -639,8 +674,88 @@ length(unique(periods_BlackR_accel$Receiver))
 
 
 
+#Dungeness unique receivers
+D1 <- periods_Dungeness %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+D2 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+D3 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+D4 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+D5 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+D6 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+D7 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+D8 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+D9 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+Dungeness_receivers <- bind_rows(D1, D2, D3, D4, D5, D6, D7, D8, D9) %>% rename(n.receiver = 'n_distinct(Receiver)')
+
+ggplot(Dungeness_receivers, aes(x=Date, y=n.receiver, fill=periods)) + 
+  geom_boxplot() +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Average unique receivers detected on", title = "Dungeness Detection Range by Period", fill="periods",
+       caption = "Preliminary analyses")
 
 
+#Black R unique receivers
+B1 <- periods_BlackR_accel %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+B2 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+B3 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+B4 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+B5 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+B6 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+B7 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+B8 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+B9 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+BlackR_receivers <- bind_rows(B1, B2, B3, B4, B5, B6, B7, B8, B9) %>% rename(n.receiver = 'n_distinct(Receiver)')
+
+ggplot(BlackR_receivers, aes(x=Date, y=n.receiver, fill=periods)) + 
+  geom_boxplot() +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Average unique receivers detected on", title = "Black rockfish Detection Range by Period", fill="periods",
+       caption = "Preliminary analyses")
+
+
+#China R unique receivers
+C1 <- periods_ChinaR %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+C2 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+C3 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+C4 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+C5 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+C6 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+C7 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+C8 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+C9 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+ChinaR_receivers <- bind_rows(C1, C2, C3, C4, C5, C6, C7, C8, C9) %>% rename(n.receiver = 'n_distinct(Receiver)')
+
+ggplot(ChinaR_receivers, aes(x=Date, y=n.receiver, fill=periods)) + 
+  geom_boxplot() +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Average unique receivers detected on", title = "China rockfish Detection Range by Period", fill="periods",
+       caption = "Preliminary analyses")
+
+
+#Lingccod unique receivers
+L1 <- periods_Lingcod %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+L2 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+L3 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+L4 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+L5 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+L6 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+L7 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+L8 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+L9 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% summarise(n_distinct(Receiver)) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+Lingcod_receivers <- bind_rows(L1, L2, L3, L4, L5, L6, L7, L8, L9) %>% rename(n.receiver = 'n_distinct(Receiver)')
+
+ggplot(Lingcod_receivers, aes(x=Date, y=n.receiver, fill=periods)) + 
+  geom_boxplot() +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Average unique receivers detected on", title = "Lingcod Detection Range by Period", fill="periods",
+       caption = "Preliminary analyses")
 
 
 
@@ -710,6 +825,98 @@ violin_ChinaR <- ggplot(periods_ChinaR, aes(x=survey.period, y=Sensor.Value, fil
   labs(x = "Period of survey", y = "Acceleration values", title = "China Rockfish Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
 violin_ChinaR
+
+
+#Dungeness accel random days
+DV1 <- periods_Dungeness %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+DV2 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+DV3 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+DV4 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+DV5 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+DV6 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+DV7 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+DV8 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+DV9 <- periods_Dungeness  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+Dungeness_accel <- bind_rows(DV1, DV2, DV3, DV4, DV5, DV6, DV7, DV8, DV9)
+
+
+ggplot(Dungeness_accel, aes(x=Date, y=Sensor.Value, fill=periods)) + 
+  geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Acceleration values", title = "Dungeness Crab Acceleration by Period", fill="Period",
+       caption = "Preliminary analyses")
+
+
+#BlackR accel random days
+BV1 <- periods_BlackR_accel %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+BV2 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+BV3 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+BV4 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+BV5 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+BV6 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+BV7 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+BV8 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+BV9 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+BlackR_accel <- bind_rows(BV1, BV2, BV3, BV4, BV5, BV6, BV7, BV8, BV9)
+
+
+ggplot(BlackR_accel, aes(x=Date, y=Sensor.Value, fill=periods)) + 
+  geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Acceleration values", title = "Black Rockfish Acceleration by Period", fill="Period",
+       caption = "Preliminary analyses")
+
+
+#China R random days
+CV1 <- periods_ChinaR %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+CV2 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+CV3 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+CV4 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+CV5 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+CV6 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+CV7 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+CV8 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+CV9 <- periods_ChinaR  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+ChinaR_accel <- bind_rows(CV1, CV2, CV3, CV4, CV5, CV6, CV7, CV8, CV9)
+
+
+ggplot(ChinaR_accel, aes(x=Date, y=Sensor.Value, fill=periods)) + 
+  geom_violin(trim=FALSE) +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
+  labs(x = "Date of survey", y = "Acceleration values", title = "China Rockfish Acceleration by Period", fill="Period",
+       caption = "Preliminary analyses")
+
+
+#Lingcod accel random days
+LV1 <- periods_Lingcod %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+LV2 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+LV3 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+LV4 <- periods_Lingcod  %>% filter(survey.period == "June 11") %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+LV5 <- periods_Lingcod  %>% filter(survey.period == "June 17") %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+LV6 <- periods_Lingcod  %>% filter(survey.period == "June 18") %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+LV7 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+LV8 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+LV9 <- periods_Lingcod  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+Lingcod_accel <- bind_rows(LV1, LV2, LV3, LV4, LV5, LV6, LV7, LV8, LV9)
+
+
+ggplot(Lingcod_accel, aes(x=Date, y=Sensor.Value, fill=periods)) + 
+  geom_violin(trim=TRUE) +
+  labs(x = "Date of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
+       caption = "Preliminary analyses")
+
+
+
+
 
 ####################
 #create example plotting for all accelerometer data for all species

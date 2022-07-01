@@ -5,7 +5,7 @@ library(broom)
 # ID = transmitter code; key / time = survey period; value = sensor value
 # Convert periods into factor variables
 periods_Lingcod_RM <- periods_Lingcod
-periods_Lingcod_RM <- periods_Lingcod_RM %>% select(Transmitter, Sensor.Value, survey.period) %>%
+periods_Lingcod_RM <- periods_Lingcod_RM %>% dplyr::select(Transmitter, Sensor.Value, survey.period) %>%
                       convert_as_factor(Transmitter, survey.period) %>% drop_na()
 
 #regular ANOVA

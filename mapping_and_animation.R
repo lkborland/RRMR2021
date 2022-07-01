@@ -12,14 +12,24 @@ library(adehabitatHR)
 #set world map data
 mapWorld <- ne_countries(scale = "medium", returnclass = "sf")
 
+#remove observations with period NA for plotting
+plot_Lingcoddata <- periods_Lingcod %>% filter(!is.na(coarse.period))
+
 #create map zoomed in around study site
 mapPortO <- ggplot(data = mapWorld) + geom_sf() + 
   annotation_scale(location = "bl", width_hint = 0.5) +
   annotation_north_arrow(location = "bl", which_north = "true",
                          pad_x = unit(0.75, "in"), pad_y = unit(0.5, "in"),
                          style = north_arrow_fancy_orienteering()) +
-  geom_point(data = prelim_periods_Dung, mapping = aes(x = Longitude, y = Latitude), color = "cyan") +
-  coord_sf(xlim = c(-127, -120), ylim = c(42.5, 43))
+  geom_point(data = periods_Lingcod, mapping = aes(x = Longitude, y = Latitude, color = survey.period)) +
+  coord_sf(xlim = c(-124.485, -124.47), ylim = c(42.687, 42.715)) + 
+  facet_wrap(vars(survey.period), nrow = 2)
+
+mapPortO_coarse <- ggplot(data = mapWorld) + geom_sf() + 
+  annotation_scale(location = "bl", width_hint = 0.5) +
+  geom_point(data = plot_Lingcoddata, mapping = aes(x = Longitude, y = Latitude, color = coarse.period)) +
+  coord_sf(xlim = c(-124.485, -124.47), ylim = c(42.687, 42.715)) + 
+  facet_wrap(vars(coarse.period), nrow = 1, drop=TRUE)
 
 #create animation over time of Dungeness crab detections (lat/long), color by period: render time ~
 animate_Dungeness <- ggplot(data = mapWorld) + geom_sf() + 

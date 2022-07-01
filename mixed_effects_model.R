@@ -36,6 +36,12 @@ periods_BlackR_depth$survey.period <- factor(periods_BlackR_depth$survey.period,
 
 
 periods_Dungeness$coarse.period <- factor(periods_Dungeness$coarse.period, levels = coarse.period.lvl[c(1:3)])
+periods_Lingcod$coarse.period <- factor(periods_Lingcod$coarse.period, levels = coarse.period.lvl[c(1:3)])
+periods_BlackR_accel$coarse.period <- factor(periods_BlackR_accel$coarse.period, levels = coarse.period.lvl[c(1:3)])
+periods_ChinaR$coarse.period <- factor(periods_ChinaR$coarse.period, levels = coarse.period.lvl[c(1:3)])
+
+
+
 periods_Dungeness$day.night <- factor(periods_Dungeness$day.night)
 
 
