@@ -429,12 +429,22 @@ periods_Lingcod <- dat_Lingcod %>% mutate(survey.period = case_when(Date.time.UT
                                                                     Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "June 19-July 11"))
 
 
-#convert to posixct time type
+#convert to posixct time type, convert observation times to US Pacific time zone
 periods_Dungeness$Date.time.UTC <- as.POSIXct(strptime(periods_Dungeness$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+periods_Dungeness$Date.time.UTC <- with_tz(periods_Dungeness$Date.time.UTC, tzone = "US/Pacific")
+
 periods_Lingcod$Date.time.UTC <- as.POSIXct(strptime(periods_Lingcod$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+
 periods_BlackR_accel$Date.time.UTC <- as.POSIXct(strptime(periods_BlackR_accel$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+
 periods_BlackR_depth$Date.time.UTC <- as.POSIXct(strptime(periods_BlackR_depth$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+
 periods_ChinaR$Date.time.UTC <- as.POSIXct(strptime(periods_ChinaR$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
+NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+
 #add column of minimum time based on detections, by individual
 #periods_Dungeness <- periods_Dungeness %>% group_by(Transmitter) %>% mutate(time.min = min(Date.time.UTC))
 #periods_Lingcod <- periods_Lingcod %>% group_by(Transmitter) %>% mutate(time.min = min(Date.time.UTC))
@@ -534,7 +544,7 @@ periods_ChinaR <- periods_ChinaR %>% mutate(coarse.period = case_when(survey.per
                                                                             survey.period == "June 19-July 11" ~ "After"))
 
 
-#### add other animals to this
+#### splitting out date and times of each row (observation) separately for function
 periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(detect_day = date(Date.time.UTC)) %>% 
   dplyr::mutate(detect_time = hms::as_hms(Date.time.UTC))
 periods_Dungeness$detect_time <- as.POSIXct(periods_Dungeness$detect_time, format = "%H:%M:%S")
@@ -572,17 +582,32 @@ case_day_night <- function(fishdate, fishtime) {
   exdate <- subset(Port_O_Sun, as.Date(Port_O_Sun$Date) %in% fishdate)
   sunrise <- exdate$Sunrise.Time
   sunset <- exdate$Sunset.Time
-  day.night <- case_when(
+  daynight <- case_when(
                    fishtime < sunrise | fishtime >= sunset ~ "Night",
                    fishtime >= sunrise & fishtime < sunset ~ "Day"
                )
-  return(day.night)
+  return(daynight)
 }
 
+
+case_day_night <- function(fishdate, fishtime) {
+  
+  exdate <- subset(Port_O_Sun, as.Date(Port_O_Sun$Date) %in% fishdate)
+  sunrise <- exdate$Sunrise.Time
+  sunset <- exdate$Sunset.Time
+  daynight <- case_when(
+    fishtime >= sunrise & fishtime < sunset ~ "Day",
+    fishtime < sunrise | fishtime >= sunset ~ "Night")
+  return(daynight)
+
+  }
+
 #add day/night info to datasets
-periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(day.night = case_day_night(detect_day, detect_time))
+#periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(day.night = case_day_night(detect_day, detect_time)) #doesn't work
 
+periods_Dungeness$day.night <- mapply(FUN = case_day_night, fishdate = periods_Dungeness$detect_day, fishtime = periods_Dungeness$detect_time)
 
+periods_Dungeness$day.night <- do.call( function(detect_day,detect_time,...) case_day_night(detect_day, detect_time), periods_Dungeness )
 
 
 
