@@ -434,16 +434,16 @@ periods_Dungeness$Date.time.UTC <- as.POSIXct(strptime(periods_Dungeness$Date.ti
 periods_Dungeness$Date.time.UTC <- with_tz(periods_Dungeness$Date.time.UTC, tzone = "US/Pacific")
 
 periods_Lingcod$Date.time.UTC <- as.POSIXct(strptime(periods_Lingcod$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
-NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+periods_Lingcod$Date.time.UTC <- with_tz(periods_Lingcod$Date.time.UTC, tzone = "US/Pacific")
 
 periods_BlackR_accel$Date.time.UTC <- as.POSIXct(strptime(periods_BlackR_accel$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
-NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+periods_BlackR_accel$Date.time.UTC <- with_tz(periods_BlackR_accel$Date.time.UTC, tzone = "US/Pacific")
 
 periods_BlackR_depth$Date.time.UTC <- as.POSIXct(strptime(periods_BlackR_depth$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
-NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+periods_BlackR_depth$Date.time.UTC <- with_tz(periods_BlackR_depth$Date.time.UTC, tzone = "US/Pacific")
 
 periods_ChinaR$Date.time.UTC <- as.POSIXct(strptime(periods_ChinaR$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
-NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
+periods_ChinaR$Date.time.UTC <- with_tz(periods_ChinaR$Date.time.UTC, tzone = "US/Pacific")
 
 #add column of minimum time based on detections, by individual
 #periods_Dungeness <- periods_Dungeness %>% group_by(Transmitter) %>% mutate(time.min = min(Date.time.UTC))
@@ -605,9 +605,9 @@ case_day_night <- function(fishdate, fishtime) {
 #add day/night info to datasets
 #periods_Dungeness <- periods_Dungeness %>% dplyr::mutate(day.night = case_day_night(detect_day, detect_time)) #doesn't work
 
-periods_Dungeness$day.night <- mapply(FUN = case_day_night, fishdate = periods_Dungeness$detect_day, fishtime = periods_Dungeness$detect_time)
+periods_Dungeness$day.night <- mapply(FUN = case_day_night, periods_Dungeness$detect_day, periods_Dungeness$detect_time, SIMPLIFY = FALSE)
 
-periods_Dungeness$day.night <- do.call( function(detect_day,detect_time,...) case_day_night(detect_day, detect_time), periods_Dungeness )
+#periods_Dungeness$day.night <- do.call( function(detect_day,detect_time,...) case_day_night(detect_day, detect_time), periods_Dungeness )
 
 
 
@@ -615,23 +615,29 @@ periods_Dungeness$day.night <- do.call( function(detect_day,detect_time,...) cas
 #data on rms sound pressure levels, peak pressure in 30 s windows, 
 #and the cumulative exposure levels in 30 s windows. The three files correspond to the three sensors located 35 cm, 
 #50 cm and 70 cm above the sea bed.
-NS35cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40B_35cmAB.csv")
+NS35cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40B_35cmAB.csv")
 NS35cm$Time <- as.POSIXct(NS35cm$Time, format = "%m/%d/%Y %H:%M:%S")
 NS35cm$Time <- with_tz(NS35cm$Time, tzone = "US/Pacific")
 NS35cm <- NS35cm %>% rename(Date.time.UTC = Time)
 NS35cm$Date.time.UTC <- round_date(NS35cm$Date.time.UTC, "30 seconds")
 
-NS50cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file100_50cmAB.csv")
-NS50cm$Time <- as.POSIXct(NS50cm$Time, format = "%m/%d/%Y %H:%M:%S")
-NS50cm$Time <- with_tz(NS50cm$Time, tzone = "US/Pacific")
-NS50cm <- NS50cm %>% rename(Date.time.UTC = Time)
-NS50cm$Date.time.UTC <- round_date(NS50cm$Date.time.UTC, "30 seconds")
+NS35cm_vel <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40B_vel_35cmAB.csv")
+NS35cm_vel$Time <- as.POSIXct(NS35cm_vel$Time, format = "%m/%d/%Y %H:%M:%S")
+NS35cm_vel$Time <- with_tz(NS35cm_vel$Time, tzone = "US/Pacific")
+NS35cm_vel <- NS35cm_vel %>% rename(Date.time.UTC = Time)
+NS35cm_vel$Date.time.UTC <- round_date(NS35cm_vel$Date.time.UTC, "30 seconds")
 
-NS70cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\file40A_70cmAB.csv") %>% rename(Time = ï..Time)
+NS70cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40A_70cmAB.csv") %>% rename(Time = ï..Time)
 NS70cm$Time <- as.POSIXct(NS70cm$Time, format = "%m/%d/%Y %H:%M:%S")
 NS70cm$Time <- with_tz(NS70cm$Time, tzone = "US/Pacific")
 NS70cm <- NS70cm %>% rename(Date.time.UTC = Time)
 NS70cm$Date.time.UTC <- round_date(NS70cm$Date.time.UTC, "30 seconds")
+
+NS70cm_vel <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40A_vel_70cmAB.csv") %>% rename(Time = ï..Time)
+NS70cm_vel$Time <- as.POSIXct(NS70cm_vel$Time, format = "%m/%d/%Y %H:%M:%S")
+NS70cm_vel$Time <- with_tz(NS70cm_vel$Time, tzone = "US/Pacific")
+NS70cm_vel <- NS70cm_vel %>% rename(Date.time.UTC = Time)
+NS70cm_vel$Date.time.UTC <- round_date(NS70cm_vel$Date.time.UTC, "30 seconds")
 
 #combine noise data sets
 NSall <- full_join(NS35cm, NS50cm, by = "Date.time.UTC")
@@ -654,15 +660,34 @@ periods_BlackR_depth_noise <- inner_join(NSall, periods_BlackR_depth, by = "Date
 periods_ChinaR_noise <- inner_join(NSall, periods_ChinaR, by = "Date.time.UTC")
 
 #add Port Orford SBE data to data sets with sensor values
-Port_O_SBE <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE_data.csv")
+Port_O_SBE <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE.csv")
 ##use data points at depth only - filter out those with depths smaller than 30m
 Port_O_SBE <- Port_O_SBE %>% filter(DepSM > 30)
 ##rename columns for ease of use
 Port_O_SBE <- Port_O_SBE %>% rename(TempC = Tv290C) %>% rename(Salinity = Sal00) %>% rename(DepthM = DepSM)
 ##change timezone of data (same point in time, convert to UTC from PDT to merge with transmitter data)
-Port_O_SBE$Time <- as.POSIXct(Port_O_SBE$Time, format = "%m/%d/%Y %H:%M:%S")
+Port_O_SBE$Time <- as.POSIXct(Port_O_SBE$Time, format = "%m/%d/%Y %H:%M")
 Port_O_SBE$Time <- with_tz(Port_O_SBE$Time, tzone = "US/Pacific")
-Port_O_SBE <- Port_O_SBE %>% rename("Date.time.UTC" = "SBE_time")
+Port_O_SBE <- Port_O_SBE %>% rename(Date.time.UTC = Time)
+
+#add SBE data to data sets of movement metrics
+periods_Dungeness_SBE <- full_join(Port_O_SBE, periods_Dungeness, by = "Date.time.UTC")
+periods_Lingcod_SBE <- full_join(Port_O_SBE, periods_Lingcod, by = "Date.time.UTC")
+periods_BlackR_accel_SBE <- full_join(Port_O_SBE, periods_BlackR_accel, by = "Date.time.UTC")
+periods_BlackR_depth_SBE <- full_join(Port_O_SBE, periods_BlackR_depth, by = "Date.time.UTC")
+periods_ChinaR_SBE <- full_join(Port_O_SBE, periods_ChinaR, by = "Date.time.UTC")
+
+
+#upper 75th quartiles
+acc75_D <- periods_Dungeness_SBE[,.(median = quantile(Sensor.Value, probs = c(0.5), na.rm = TRUE), 
+                                      u75 = quantile(Sensor.Value,probs = c(0.75), na.rm = TRUE)),
+                                  by = .(Sensor.Value, Transmitter, TempC, C0mS.cm, Salinity, survey.period,Date.time.UTC)]
+
+
+
+
+
+
 
 
 
@@ -781,11 +806,6 @@ ggplot(Lingcod_receivers, aes(x=Date, y=n.receiver, fill=periods)) +
   geom_boxplot() +  stat_summary(fun.data=mean_sdl, geom="pointrange", color="black") +
   labs(x = "Date of survey", y = "Average unique receivers detected on", title = "Lingcod Detection Range by Period", fill="periods",
        caption = "Preliminary analyses")
-
-
-
-##join SBE data to transmitter sensor dataset 
-periods_Dungeness_noise <- full_join(periods_Dungeness_noise, Port_O_SBE, by = "Date.time.UTC")
 
 
 
@@ -938,6 +958,19 @@ ggplot(Lingcod_accel, aes(x=Date, y=Sensor.Value, fill=periods)) +
   geom_violin(trim=TRUE) +
   labs(x = "Date of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
+
+
+
+#round times in acceleration data sets to combine with Noise Spotter data and SBE
+Dungeness_accel$Date.time.UTC <- round_date(Dungeness_accel$Date.time.UTC, "30 seconds")
+Lingcod_accel$Date.time.UTC <- round_date(Lingcod_accel$Date.time.UTC, "30 seconds")
+BlackR_accel$Date.time.UTC <- round_date(BlackR_accel$Date.time.UTC, "30 seconds")
+ChinaR_accel$Date.time.UTC <- round_date(ChinaR_accel$Date.time.UTC, "30 seconds")
+
+Dungeness_accel <- full_join(Port_O_SBE, Dungeness_accel, by = "Date.time.UTC")
+Lingcod_accel <- full_join(Port_O_SBE, Lingcod_accel, by = "Date.time.UTC")
+BlackR_accel <- full_join(Port_O_SBE, BlackR_accel, by = "Date.time.UTC")
+ChinaR_accel <- full_join(Port_O_SBE, ChinaR_accel, by = "Date.time.UTC")
 
 
 

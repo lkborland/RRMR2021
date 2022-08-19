@@ -1,3 +1,7 @@
+library(lattice)
+
+
+
 ex_plot_BlackR <- ggplot(dat_BlackR_accel, aes(Date.time.UTC, Sensor.Value)) + 
   geom_point() + gghighlight((Date.time.UTC >= June11_start) & (Date.time.UTC <= June11_end)) + 
   labs(x = "Time", y = "Acceleration values", title = "Black Rockfish Acceleration Over Time", color="Transmitter",
@@ -138,3 +142,13 @@ ggplot(periods_BlackR, aes(x=survey.period)) +
   scale_x_discrete(limits=c("Before", "June 11", "June 12-16", "June 16", "June 16-17", "June 17", "June 17-18", "June 18", "After June 18")) +
   labs(x = "Period of survey", y = "Number of detection events", title = "Black Rockfish Detections by Period",
        caption = "Preliminary analyses")
+
+
+
+
+
+dotplot(ranef(acc_lmer_BlackR))
+
+model <- ranef(acc_lmer_BlackR,condVar=TRUE)
+dotplot(model, main=FALSE,scales = list(x =list(relation = 'free')))[["Salinity"]]
+
