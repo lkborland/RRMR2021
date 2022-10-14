@@ -18,331 +18,331 @@ animal_transmit <- dplyr::select(tagsheet, Transmitter, Tag.Destination)
 #Assign prelim transmitter (animal) logs to variables in the environment
 A_12048 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12048.csv", 
                               na.strings = c("Sensor Fault"))) %>%
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12049 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12049.csv", 
                               na.strings = c("Sensor Fault"))) %>%
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12050 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12050.csv", 
                               na.strings = c("Sensor Fault"))) %>%
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12051 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12051.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12052 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12052.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12053 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12053.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12054 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12054.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12055 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12055.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12056 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12056.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12057 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12057.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12058<- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12058.csv", 
                              na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12059 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12059.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12060 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12060.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12061 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12061.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12062 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12062.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12063 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12063.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12064 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12064.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12065 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12065.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12066 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12066.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12067 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12067.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12068 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12068.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12069 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12069.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12070 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12070.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12071 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12071.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12072 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12072.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12073 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12073.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12074 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12074.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12075 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12075.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 A_12076 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12076.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "acceleration")
 
 A_12077 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-12077.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.) %>%
+  rename(Date.time.UTC = Date.and.Time..UTC.) %>%
   mutate(tag.type = "depth")
 
 
 
 A_13249 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13249.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13250 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13250.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13251 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13251.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13252 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13252.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13253 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13253.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13254 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13254.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13255 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13255.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13256 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13256.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13257 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13257.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13258 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13258.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13259 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13259.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13260 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13260.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13261 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13261.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13262 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13262.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13263 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13263.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13264 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13264.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13265 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13265.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13266 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13266.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13267 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13267.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13268 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13268.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13269 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13269.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13270 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13270.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13271 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13271.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13272 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13272.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13273 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13273.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13274 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13274.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13275 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13275.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13276 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13276.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13277 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13277.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13278 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13278.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13279 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13279.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13280 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13280.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13281 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13281.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13282 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13282.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13283 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13283.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13284 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13284.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13285 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13285.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13286 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13286.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13287 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13287.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13289 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13289.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13290 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13290.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13291 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13291.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13292 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13292.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 A_13293 <- as_tibble(read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\VUE_export_final\\A69-9007-13293.csv", 
                               na.strings = c("Sensor Fault"))) %>% 
-  rename(Date.time.UTC = ï..Date.and.Time..UTC.)
+  rename(Date.time.UTC = Date.and.Time..UTC.)
 
 
 #combine detections by transmitter tag to plot accelerometer data over time
@@ -627,21 +627,21 @@ NS35cm_vel$Time <- with_tz(NS35cm_vel$Time, tzone = "US/Pacific")
 NS35cm_vel <- NS35cm_vel %>% rename(Date.time.UTC = Time)
 NS35cm_vel$Date.time.UTC <- round_date(NS35cm_vel$Date.time.UTC, "30 seconds")
 
-NS70cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40A_70cmAB.csv") %>% rename(Time = ï..Time)
+NS70cm <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40A_70cmAB.csv")
 NS70cm$Time <- as.POSIXct(NS70cm$Time, format = "%m/%d/%Y %H:%M:%S")
 NS70cm$Time <- with_tz(NS70cm$Time, tzone = "US/Pacific")
 NS70cm <- NS70cm %>% rename(Date.time.UTC = Time)
 NS70cm$Date.time.UTC <- round_date(NS70cm$Date.time.UTC, "30 seconds")
 
-NS70cm_vel <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40A_vel_70cmAB.csv") %>% rename(Time = ï..Time)
+NS70cm_vel <- read.csv("D:\\MS research\\Integral NoiseSpotter Data\\updated August 22\\file40A_vel_70cmAB.csv")
 NS70cm_vel$Time <- as.POSIXct(NS70cm_vel$Time, format = "%m/%d/%Y %H:%M:%S")
 NS70cm_vel$Time <- with_tz(NS70cm_vel$Time, tzone = "US/Pacific")
 NS70cm_vel <- NS70cm_vel %>% rename(Date.time.UTC = Time)
 NS70cm_vel$Date.time.UTC <- round_date(NS70cm_vel$Date.time.UTC, "30 seconds")
 
 #combine noise data sets
-NSall <- full_join(NS35cm, NS50cm, by = "Date.time.UTC")
-NSall <- full_join(NSall, NS70cm, by = "Date.time.UTC")
+NSall <- full_join(NS35cm, NS70cm, by = "Date.time.UTC")
+#NSall <- full_join(NSall, NS70cm, by = "Date.time.UTC")
 
 
 #round times in acceleration data sets to combine with Noise Spotter data
@@ -653,11 +653,12 @@ periods_ChinaR$Date.time.UTC <- round_date(periods_ChinaR$Date.time.UTC, "30 sec
 
 
 #add noise levels to data sets of movement metrics, remove observations without noise data
-periods_Dungeness_noise <- inner_join(NSall, periods_Dungeness, by = "Date.time.UTC")
-periods_Lingcod_noise <- inner_join(NSall, periods_Lingcod, by = "Date.time.UTC")
-periods_BlackR_accel_noise <- inner_join(NSall, periods_BlackR_accel, by = "Date.time.UTC")
-periods_BlackR_depth_noise <- inner_join(NSall, periods_BlackR_depth, by = "Date.time.UTC")
-periods_ChinaR_noise <- inner_join(NSall, periods_ChinaR, by = "Date.time.UTC")
+###############################################################
+periods_Dungeness_noise <- inner_join(NS35cm_vel, periods_Dungeness, by = "Date.time.UTC")
+periods_Lingcod_noise <- inner_join(NS35cm, periods_Lingcod, by = "Date.time.UTC")
+periods_BlackR_accel_noise <- inner_join(NS70cm, periods_BlackR_accel, by = "Date.time.UTC")
+periods_BlackR_depth_noise <- inner_join(NS70cm, periods_BlackR_depth, by = "Date.time.UTC")
+periods_ChinaR_noise <- inner_join(NS35cm, periods_ChinaR, by = "Date.time.UTC")
 
 #add Port Orford SBE data to data sets with sensor values
 Port_O_SBE <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE.csv")
@@ -958,6 +959,19 @@ ggplot(Lingcod_accel, aes(x=Date, y=Sensor.Value, fill=periods)) +
   geom_violin(trim=TRUE) +
   labs(x = "Date of survey", y = "Acceleration values", title = "Lingcod Acceleration by Period", fill="Period",
        caption = "Preliminary analyses")
+
+
+
+#accel June 9 - 18########################################
+BR_June <- periods_BlackR_accel_noise %>% filter(detect_day >= as.Date("2021-06-09") & detect_day <= as.Date("2021-06-18"))
+CR_June <- periods_ChinaR_noise %>% filter(detect_day >= as.Date("2021-06-09") & detect_day <= as.Date("2021-06-18"))
+Lingcod_June <- periods_Lingcod_noise %>% filter(detect_day >= as.Date("2021-06-09") & detect_day <= as.Date("2021-06-18"))
+Dungeness_June <- periods_Dungeness_noise %>% filter(detect_day >= as.Date("2021-06-09") & detect_day <= as.Date("2021-06-18"))
+#add sound data to this tibble
+#BR_June <- inner_join(___________, BR_June, by = "Date.time.UTC") #join by 30 second rounding 
+#CR_June <- inner_join(___________, CR_June, by = "Date.time.UTC") #join by 30 second rounding
+#Lingcod_June <- inner_join(___________, Lingcod_June, by = "Date.time.UTC") #join by 30 second rounding
+#Dungeness_June <- inner_join(___________, Dungeness_June, by = "Date.time.UTC") #join by 30 second rounding
 
 
 
