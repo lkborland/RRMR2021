@@ -108,16 +108,16 @@ summary(acc_lmer_Dungeness_9)
 
 
 #linear regression forjune 9-18, accel by SEL
-BR_June_lm <- lm(SEL ~ Sensor.Value, data = BR_June) #Create the linear regression
+BR_June_lm <- lm(Sensor.Value ~ SEL, data = BR_June) #Create the linear regression
 summary(BR_June_lm)
 
-CR_June_lm <- lm(SEL ~ Sensor.Value, data = CR_June) #Create the linear regression
+CR_June_lm <- lm(Sensor.Value ~ SEL, data = CR_June) #Create the linear regression
 summary(CR_June_lm)
 
-Lingcod_June_lm <- lm(SEL ~ Sensor.Value, data = Lingcod_June) #Create the linear regression
+Lingcod_June_lm <- lm(Sensor.Value ~ SEL, data = Lingcod_June) #Create the linear regression
 summary(Lingcod_June_lm)
 
-Dungeness_June_lm <- lm(SEL ~ Sensor.Value, data = Dungeness_June) #Create the linear regression
+Dungeness_June_lm <- lm(Sensor.Value ~ SEL, data = Dungeness_June) #Create the linear regression
 summary(Dungeness_June_lm)
 
 
