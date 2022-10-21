@@ -486,19 +486,20 @@ ggplot(periods_ChinaR, aes(Date.time.UTC, Sensor.Value)) +
 
 #remove observations of transmitters with too low sample size/observations
 ##China R: 13265
-periods_ChinaR <- periods_ChinaR %>% filter(!(Transmitter == "A69-9007-13265"))
+periods_ChinaR <- periods_ChinaR %>% filter(!(Transmitter == "A69-9007-13265" | Transmitter == "A69-9007-13268"))
 
 ##Black R accel: 12072
 periods_BlackR_accel <- periods_BlackR_accel %>% filter(!(Transmitter == "A69-9007-12072"))
 
 ##Lingcod: 13250, 13262
-periods_Lingcod <- periods_Lingcod %>% filter(!(Transmitter == "A69-9007-13250" | Transmitter == "A69-9007-13262"))
+periods_Lingcod <- periods_Lingcod %>% filter(!(Transmitter == "A69-9007-13262"))
 
 ##Dungeness: 13293
 periods_Dungeness <- periods_Dungeness %>% filter(!(Transmitter == "A69-9007-13293"))
 
 
-
+#ex_fish <- periods_Dungeness %>% filter(Transmitter == "A69-9007-13293")
+#plot(ex_fish$Date.time.UTC, ex_fish$Sensor.Value)
 
 ##vector of generic sunrise to sunset
 Port_O_Sun <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\NOAA Port Orford tides\\NOAA_PortO_NightDay2021.csv")

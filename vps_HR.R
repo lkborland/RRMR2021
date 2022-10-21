@@ -142,13 +142,34 @@ g + facet_wrap(~id)
 
 
 #Black rockfish
-animal.positions <- periods_BlackR_accel
-animal.positions <- animal.positions %>% dplyr::group_by(Transmitter)
-ex_BlackR <- animal.positions[!is.na(animal.positions$Longitude) & !is.na(animal.positions$Latitude),]
+BR.positions.before <- BlackR_accel %>% filter(periods == "Before") %>% filter(Transmitter == "A69-9007-12048")
+BR.positions.before <- BR.positions.before %>% dplyr::group_by(Transmitter)
+ex_BlackR <- BR.positions.before[!is.na(BR.positions.before$Longitude) & !is.na(BR.positions.before$Latitude),]
 ex_BlackR.sp <- ex_BlackR[, c("Transmitter", "Longitude", "Latitude")]
 coordinates(ex_BlackR.sp) <- c("Longitude", "Latitude")
 proj4string(ex_BlackR.sp) <- CRS("+init=epsg:4326")
-kernel.ref.BlackR <- kernelUD(ex_BlackR.sp, h = "href")
+
+#####################################
+preBRcoord <- coordinates(ex_BlackR.sp)
+preBRcoord_xlong <- preBRcoord[,1]
+preBRcoord_ylat <- preBRcoord[,2]
+preBRcoord <- data.frame(preBRcoord_xlong, preBRcoord_ylat)
+pre_xlong_max <- #max(preBRcoord$preBRcoord_xlong) 
+pre_xlong_min <- #min(preBRcoord$preBRcoord_xlong)
+pre_ylat_max <- #max(preBRcoord$preBRcoord_ylat) 
+pre_ylat_min <- #min(preBRcoord$preBRcoord_ylat)
+
+x <- seq(-124.5, -124.459, by=.01)        
+y <-seq(42.684, 42.72, by=.01)
+xy <- expand.grid(x=x,y=y)
+coordinates(xy) <- ~x+y    
+gridded(xy) <- TRUE
+
+proj4string(xy) <- CRS("+init=epsg:4326")
+as(xy, "Spatial")
+############################################
+
+kernel.ref.BlackR <- kernelUD(ex_BlackR.sp, h = "href")#, grid = xy, extent = 1)
 BlackR.poly <- getverticeshr(kernel.ref.BlackR, percent = 95)
 
 df_BlackR.sp <- fortify(BlackR.poly)
@@ -161,16 +182,21 @@ g
 g + facet_wrap(~id)
 
 
+############################################################
+
+
+
+
 
 #China rockfish
-animal.positions <- periods_ChinaR_accel
+animal.positions <- ChinaR_accel %>% filter(Transmitter == "A69-9007-13269") %>% filter(periods == "After")
 animal.positions <- animal.positions %>% dplyr::group_by(Transmitter)
 ex_ChinaR <- animal.positions[!is.na(animal.positions$Longitude) & !is.na(animal.positions$Latitude),]
 ex_ChinaR.sp <- ex_ChinaR[, c("Transmitter", "Longitude", "Latitude")]
 coordinates(ex_ChinaR.sp) <- c("Longitude", "Latitude")
 proj4string(ex_ChinaR.sp) <- CRS("+init=epsg:4326")
 kernel.ref.ChinaR <- kernelUD(ex_ChinaR.sp, h = "href")
-ChinaR.poly <- getverticeshr(kernel.ref.ChinaR, percent = 50)
+ChinaR.poly <- getverticeshr(kernel.ref.ChinaR, percent = 95)
 
 df_ChinaR.sp <- fortify(ChinaR.poly)
 g <- ggplot(df_ChinaR.sp, aes(x = long, y = lat, fill = id)) +
@@ -377,10 +403,10 @@ preBRcoord <- coordinates(ex_pre_KUD_BR.sp)
 preBRcoord_xlong <- preBRcoord[,1]
 preBRcoord_ylat <- preBRcoord[,2]
 preBRcoord <- data.frame(preBRcoord_xlong, preBRcoord_ylat)
-pre_xlong_max <- max(preBRcoord$preBRcoord_xlong) + .1
-pre_xlong_min <- min(preBRcoord$preBRcoord_xlong) - .1
-pre_ylat_max <- max(preBRcoord$preBRcoord_ylat) + .1
-pre_ylat_min <- min(preBRcoord$preBRcoord_ylat) - .1
+pre_xlong_max <- max(preBRcoord$preBRcoord_xlong) + 1
+pre_xlong_min <- min(preBRcoord$preBRcoord_xlong) - 1
+pre_ylat_max <- max(preBRcoord$preBRcoord_ylat) + 1
+pre_ylat_min <- min(preBRcoord$preBRcoord_ylat) - 1
 
 ## Set the coordinate reference system (CRS)
 proj4string(ex_pre_KUD_BR.sp) <- CRS("+init=epsg:4326")
