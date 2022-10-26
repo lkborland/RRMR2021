@@ -1,5 +1,5 @@
 library(tidyverse)
-library(glatos)
+#library(glatos)
 library(lubridate)
 library(gghighlight)
 library(rstatix)
@@ -910,6 +910,22 @@ BV8 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-06-25")) %>%
 BV9 <- periods_BlackR_accel  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
 
 BlackR_accel <- bind_rows(BV1, BV2, BV3, BV4, BV5, BV6, BV7, BV8, BV9)
+
+
+#BlackR depth random days
+BDV1 <- periods_BlackR_depth %>% filter(detect_day == as.Date("2021-06-01")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-01")
+BDV2 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-03")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-03")
+BDV3 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-08")) %>% group_by(Transmitter) %>% mutate(periods = "Before") %>% mutate(Date = "2021-06-08")
+
+BDV4 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-11")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-11")
+BDV5 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-17")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-17")
+BDV6 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-18")) %>% group_by(Transmitter) %>% mutate(periods = "During") %>% mutate(Date = "2021-06-18")
+
+BDV7 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-21")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-21")
+BDV8 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-06-25")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-06-25")
+BDV9 <- periods_BlackR_depth  %>% filter(detect_day == as.Date("2021-07-01")) %>% group_by(Transmitter) %>% mutate(periods = "After") %>% mutate(Date = "2021-07-01")
+
+BlackR_depth <- bind_rows(BDV1, BDV2, BDV3, BDV4, BDV5, BDV6, BDV7, BDV8, BDV9)
 
 
 ggplot(BlackR_accel, aes(x=Date, y=Sensor.Value, fill=periods)) + 
