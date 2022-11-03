@@ -274,3 +274,8 @@ pwc <- BR_ANOVA %>%
     p.adjust.method = "bonferroni"
   )
 pwc
+
+#descriptive stats
+max(BlackR.before.df$area.before)
+max(BlackR.dur.df$area.dur)
+max(BlackR.after.df$area.after)

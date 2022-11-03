@@ -76,7 +76,7 @@ ChinaR.b77.poly <- getverticeshr(kernel.b77.ChinaR, percent = 95)
 ChinaR.b77.sp <- fortify(ChinaR.b77.poly)
 ChinaR.b77.df <- as.data.frame(ChinaR.b77.poly)
 
-##78
+##78 ##########
 CR.positions.b78 <- ChinaR_accel %>% filter(periods == "Before")%>% filter(Transmitter == "A69-9007-13278")
 CR.positions.b78 <- CR.positions.b78 %>% dplyr::group_by(Transmitter)
 b78_ChinaR <- CR.positions.b78[!is.na(CR.positions.b78$Longitude) & !is.na(CR.positions.b78$Latitude),]
@@ -92,9 +92,10 @@ ChinaR.b78.df <- as.data.frame(ChinaR.b78.poly)
 
 
 
-ChinaR.before.df <- bind_rows(ChinaR.b67.df, ChinaR.b72.df, 
-                              ChinaR.b77.df,
-                              ChinaR.b78.df)
+ChinaR.before.df <- bind_rows(#ChinaR.b67.df, 
+                              ChinaR.b72.df, 
+                              ChinaR.b77.df)#,
+                              #ChinaR.b78.df)
 ChinaR.before.df <- ChinaR.before.df %>% rename(area.before = area)
 
 
@@ -212,8 +213,9 @@ ChinaR.d78.poly <- getverticeshr(kernel.d78.ChinaR, percent = 95)
 ChinaR.d78.sp <- fortify(ChinaR.d78.poly)
 ChinaR.d78.df <- as.data.frame(ChinaR.d78.poly)
 
-ChinaR.dur.df <- bind_rows(ChinaR.d67.df, ChinaR.d72.df, 
-                           ChinaR.d77.df, ChinaR.d78.df,
+ChinaR.dur.df <- bind_rows(#ChinaR.d67.df, 
+                           ChinaR.d72.df, 
+                           ChinaR.d77.df, #ChinaR.d78.df,
                               ChinaR.d69.df)
 ChinaR.dur.df <- ChinaR.dur.df %>% rename(area.dur = area)
 
@@ -348,16 +350,17 @@ ChinaR.a78.poly <- getverticeshr(kernel.a78.ChinaR, percent = 95)
 ChinaR.a78.sp <- fortify(ChinaR.a78.poly)
 ChinaR.a78.df <- as.data.frame(ChinaR.a78.poly)
 
-ChinaR.after.df <- bind_rows(ChinaR.a67.df, ChinaR.a72.df,
-                           ChinaR.a75.df, ChinaR.a77.df, ChinaR.a78.df,
+ChinaR.after.df <- bind_rows(#ChinaR.a67.df, 
+                            ChinaR.a72.df,
+                           ChinaR.a75.df, ChinaR.a77.df, #ChinaR.a78.df,
                            ChinaR.a69.df)
 ChinaR.after.df <- ChinaR.after.df %>% rename(area.after = area)
 
 
 #dataframe of areas of individuals by three periods
 ChinaR.all.df <- ChinaR.before.df %>% 
-  inner_join(ChinaR.dur.df, by='id') %>% 
-  inner_join(ChinaR.after.df, by='id')
+  full_join(ChinaR.dur.df, by='id') %>% 
+  full_join(ChinaR.after.df, by='id')
 
 #repeated measures anova
 CR_ANOVA <- ChinaR.all.df %>%
@@ -384,3 +387,8 @@ pwc <- CR_ANOVA %>%
     p.adjust.method = "bonferroni"
   )
 pwc
+
+
+which(ChinaR.before.df$area.before %in% c(max(ChinaR.before.df$area.before)))
+which(ChinaR.dur.df$area.dur %in% c(max(ChinaR.dur.df$area.dur)))
+which(ChinaR.after.df$area.after %in% c(max(ChinaR.after.df$area.after)))

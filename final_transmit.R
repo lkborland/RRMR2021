@@ -723,7 +723,16 @@ length(unique(periods_BlackR_accel$Receiver))
 
 
 
+ex_lingcod <- periods_Lingcod %>% filter(Transmitter == "A69-9007-13255")
+length(unique(ex_lingcod$Receiver))
 
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "May 20-June 10")))
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "June 11")))
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "June 12-16")))
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "June 16")))
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "June 17")))
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "June 18")))
+length(unique(subset(periods_Lingcod$Transmitter, periods_Lingcod$survey.period == "June 19-July 11")))
 
 
 #Dungeness unique receivers
