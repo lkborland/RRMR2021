@@ -10,6 +10,24 @@ library(lmerTest)
 #set variable for levels of factors
 period_lvl <- c("May 20-June 10", "June 11", "June 12-16", "June 16", 
                  "June 17", "June 18", "June 19-July 11")
+noise_labels <- c("Before", "Noise", "No noise", "Noise",
+                  "Noise", "Noise", "After")
+
+
+noise_labels_9 <- c("Before", "Before", "Before", "June 11", "June 17", "June 18",
+                    "After", "After", "After")
+noise_lvl_9 <- c("2021-06-01", "2021-06-03", "2021-06-08", "2021-06-11", "2021-06-17", 
+                 "2021-06-18", "2021-06-21", "2021-06-25", "2021-07-01")
+noise_colors_9 <- c("#C7695F", "#C7695F", "#C7695F", "#91F6FA", "#91F6FA", "#91F6FA", 
+                    "#1B5094", "#1B5094", "#1B5094")
+
+
+KUD_labels <- c("Before", "During", "After")
+noise_colors <- c("#FB8F85", "#BE90E6", "#91F7FA", "#B3E685", "#FFD9B2")
+noise_colors_2 <- c("#5F8DC7", "#1B5094", "#91F6FA", "#FBDAD0", "#C7695F")
+noise_colors_repeat <- c("#C7695F", "#91F6FA", "#FBDAD0", "#91F6FA", "#91F6FA", "#91F6FA", "#1B5094")
+
+#
 
 coarse.period.lvl <- c("Before", "During", "After")
 

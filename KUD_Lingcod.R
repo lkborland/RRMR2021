@@ -15,6 +15,8 @@ LC.b49.sp <- fortify(LC.b49.poly)
 LC.b49.df <- as.data.frame(LC.b49.poly)
 LC.b49.df <- LC.b49.df %>% rename(area.before = area)
 
+kmlPolygons(obj = LC.b49.poly, kmlfile="LC.b49.kml", col = "blue")
+
 
 ### 13250 
 LC.positions.b50 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13250")
@@ -31,6 +33,8 @@ LC.b50.sp <- fortify(LC.b50.poly)
 LC.b50.df <- as.data.frame(LC.b50.poly)
 LC.b50.df <- LC.b50.df %>% rename(area.before = area)
 
+kmlPolygons(obj = LC.b50.poly, kmlfile="LC.b50.kml", col = "blue")
+
 ### 13251 
 LC.positions.b51 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13251")
 LC.positions.b51 <- LC.positions.b51 %>% dplyr::group_by(Transmitter)
@@ -45,6 +49,8 @@ LC.b51.poly <- getverticeshr(kernel.b51.LC, percent = 95)
 LC.b51.sp <- fortify(LC.b51.poly)
 LC.b51.df <- as.data.frame(LC.b51.poly)
 LC.b51.df <- LC.b51.df %>% rename(area.before = area)
+
+kmlPolygons(obj = LC.b51.poly, kmlfile="LC.b51.kml", col = "blue")
 
 ### 13252 #######################
 LC.positions.b52 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13252")
@@ -92,6 +98,8 @@ LC.b54.sp <- fortify(LC.b54.poly)
 LC.b54.df <- as.data.frame(LC.b54.poly)
 LC.b54.df <- LC.b54.df %>% rename(area.before = area)
 
+kmlPolygons(obj = LC.b54.poly, kmlfile="LC.b54.kml", col = "blue")
+
 ### 13255 
 LC.positions.b55 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13255")
 LC.positions.b55 <- LC.positions.b55 %>% dplyr::group_by(Transmitter)
@@ -107,6 +115,8 @@ LC.b55.sp <- fortify(LC.b55.poly)
 LC.b55.df <- as.data.frame(LC.b55.poly)
 LC.b55.df <- LC.b55.df %>% rename(area.before = area)
 
+kmlPolygons(obj = LC.b55.poly, kmlfile="LC.b55.kml", col = "blue")
+
 ### 13256
 LC.positions.b56 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13256")
 LC.positions.b56 <- LC.positions.b56 %>% dplyr::group_by(Transmitter)
@@ -121,6 +131,8 @@ LC.b56.poly <- getverticeshr(kernel.b56.LC, percent = 95)
 LC.b56.sp <- fortify(LC.b56.poly)
 LC.b56.df <- as.data.frame(LC.b56.poly)
 LC.b56.df <- LC.b56.df %>% rename(area.before = area)
+
+kmlPolygons(obj = LC.b56.poly, kmlfile="LC.b56.kml", col = "blue")
 
 ### 13257 ##################################
 LC.positions.b57 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13257")
@@ -213,8 +225,8 @@ LC.b62.sp <- fortify(LC.b62.poly)
 LC.b62.df <- as.data.frame(LC.b62.poly)
 LC.b62.df <- LC.b62.df %>% rename(area.before = area)
 
-### 13263
-LC.positions.b63 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13249")
+### 13263 ########################
+LC.positions.b63 <- periods_Lingcod %>% filter(coarse.period == "Before") %>% filter(Transmitter == "A69-9007-13263")
 LC.positions.b63 <- LC.positions.b63 %>% dplyr::group_by(Transmitter)
 b63_LC <- LC.positions.b63[!is.na(LC.positions.b63$Longitude) & !is.na(LC.positions.b63$Latitude),]
 b63_LC.sp <- b63_LC[, c("Transmitter", "Longitude", "Latitude")]
@@ -232,11 +244,14 @@ LC.b63.df <- LC.b63.df %>% rename(area.before = area)
 
 Lingcod.before.df <- bind_rows(LC.b49.df, LC.b50.df, LC.b51.df, LC.b54.df, 
                                LC.b55.df, LC.b56.df, LC.b58.df, LC.b59.df,
-                               LC.b60.df, LC.b63.df)
+                               LC.b60.df)
 
 
+Lingcod.before.poly <- bind(LC.b49.poly, LC.b50.poly, LC.b51.poly, LC.b54.poly,
+                            LC.b55.poly, LC.b56.poly, LC.b58.poly, LC.b59.poly,
+                            LC.b60.poly)
 
-
+kmlPolygons(obj = Lingcod.before.poly, kmlfile="Lingcod.before.kml", col = "blue")
 
 
 
@@ -455,7 +470,7 @@ LC.d62.df <- as.data.frame(LC.d62.poly)
 LC.d62.df <- LC.d62.df %>% rename(area.dur = area)
 
 ### 13263
-LC.positions.d63 <- periods_Lingcod %>% filter(coarse.period == "During") %>% filter(Transmitter == "A69-9007-13249")
+LC.positions.d63 <- periods_Lingcod %>% filter(coarse.period == "During") %>% filter(Transmitter == "A69-9007-13263")
 LC.positions.d63 <- LC.positions.d63 %>% dplyr::group_by(Transmitter)
 d63_LC <- LC.positions.d63[!is.na(LC.positions.d63$Longitude) & !is.na(LC.positions.d63$Latitude),]
 d63_LC.sp <- d63_LC[, c("Transmitter", "Longitude", "Latitude")]
@@ -474,7 +489,10 @@ LC.d63.df <- LC.d63.df %>% rename(area.dur = area)
 Lingcod.dur.df <- bind_rows(LC.d49.df, LC.d50.df, LC.d51.df, 
                                LC.d55.df, LC.d63.df)
 
+Lingcod.dur.poly <- bind(LC.d49.poly, LC.d50.poly, LC.d51.poly,
+                            LC.d55.poly, LC.d63.poly)
 
+kmlPolygons(obj = Lingcod.dur.poly, kmlfile="Lingcod.dur.kml", col = "blue")
 
 
 
@@ -694,7 +712,7 @@ LC.a62.df <- as.data.frame(LC.a62.poly)
 LC.a62.df <- LC.a62.df %>% rename(area.after = area)
 
 ### 13263
-LC.positions.a63 <- periods_Lingcod %>% filter(coarse.period == "After") %>% filter(Transmitter == "A69-9007-13249")
+LC.positions.a63 <- periods_Lingcod %>% filter(coarse.period == "After") %>% filter(Transmitter == "A69-9007-13263")
 LC.positions.a63 <- LC.positions.a63 %>% dplyr::group_by(Transmitter)
 a63_LC <- LC.positions.a63[!is.na(LC.positions.a63$Longitude) & !is.na(LC.positions.a63$Latitude),]
 a63_LC.sp <- a63_LC[, c("Transmitter", "Longitude", "Latitude")]
@@ -713,11 +731,19 @@ Lingcod.after.df <- bind_rows(LC.a49.df, LC.a53.df, LC.a54.df,
                                LC.a56.df, LC.a58.df, LC.a61.df,
                                LC.a63.df)
 
+Lingcod.after.poly <- bind(LC.a49.poly, LC.a53.poly, LC.a54.poly,
+                            LC.a56.poly, LC.a58.poly, LC.a61.poly,
+                            LC.a63.poly)
+
+kmlPolygons(obj = Lingcod.after.poly, kmlfile="Lingcod.after.kml", col = "blue")
+
 ##All together now!
 ###dataframe of areas of individuals by three periods
 Lingcod.all.df <- Lingcod.before.df %>% 
   full_join(Lingcod.dur.df, by='id') %>% 
   full_join(Lingcod.after.df, by='id')
+
+
 
 ###repeated measures anova
 coarse.period.lvl <- c("area.before", "area.dur", "area.after")
@@ -725,6 +751,10 @@ LC_ANOVA <- Lingcod.all.df %>%
   gather(key = "period", value = "area", area.before, area.dur, area.after) %>%
   convert_as_factor(id, period)
 LC_ANOVA$period <- factor(LC_ANOVA$period, levels = coarse.period.lvl[c(1:3)])
+
+
+LC_ANOVA2 <- LC_ANOVA %>% drop_na()
+LC_ANOVA2$period <- factor(LC_ANOVA2$period, levels = coarse.period.lvl[c(1:3)])
 
 LC_ANOVA %>%
   group_by(period) %>%
@@ -735,10 +765,11 @@ bxp
 
 
 #gotta remove NAs for the repeated measures ANOVA
-lc.aov <- anova_test(data = LC_ANOVA, dv = area, wid = id, within = period)
-get_anova_table(lc.aov)
 
-pwc <- LC_ANOVA %>%
+lc_aov <- anova_test(data = LC_ANOVA2, dv = area, wid = id, within = period) 
+get_anova_table(lc_aov)
+
+pwc <- LC_ANOVA2 %>%
   pairwise_t_test(
     area ~ period, paired = TRUE,
     p.adjust.method = "bonferroni"
@@ -746,7 +777,10 @@ pwc <- LC_ANOVA %>%
 pwc
 
 #regular ole ANOVA
-summary(aov(area ~ period, data = LC_ANOVA))
+summary(aov(area ~ period, data = LC_ANOVA2))
+
+
+
 
 
 ## During
