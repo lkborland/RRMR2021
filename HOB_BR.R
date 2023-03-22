@@ -50,6 +50,8 @@ Black$DEPTH <- Black$Sensor.Value
 Black$HOB <- abs(Black$BathyDepth)-abs(Black$DEPTH)
 Black$HOB <- with(Black,ifelse(HOB<0,0,HOB))
 
+periods_BlackR_HOB <- Black
+
 #####################################################
 #BlackSum <- Black %>% group_by(Hour) %>% summarise(AvgHOB=mean(HOB,na.rm=TRUE),HOBDev=sd(HOB,na.rm=TRUE))
 #BlackSum$Species <- "Black"
