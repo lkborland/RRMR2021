@@ -14,7 +14,7 @@ library(RColorBrewer)
 library(viridis)
 
 ### Multi-beam load raster
-RRMR_multi <- raster("D:\\MS research\\RRMR2021ReceiverLogs\\RFR_IslRk_Humbug_Region_4m1.tif")
+RRMR_multi <- raster("E:\\MS research\\RRMR2021ReceiverLogs\\RFR_IslRk_Humbug_Region_4m1.tif")
 RRMR_Rough <- terrain(RRMR_multi,opt="roughness",neighbors=8)
 RRMR_TPI <- terrain(RRMR_multi,opt="TPI",neighbors=8)
 RRMR_TRI <- terrain(RRMR_multi,opt="TRI",neighbors=8)

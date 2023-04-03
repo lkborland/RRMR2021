@@ -39,7 +39,7 @@ meth2[c("TempC", "C0mS.cm", "Salinity", "DepthM")] <- "rf" #impute with random f
 imp_BR2 <- mice(periods_BlackR_HOB_SBE, method = meth2, predictorMatrix = predM2)
 BlackR_HOBall_imputed <- complete(imp_BR2)
 
-write.csv(BlackR_HOBall_imputed, "D:\\MS research\\RRMR2021ReceiverLogs\\BlackR_HOBall_imputed.csv", row.names=TRUE)
+write.csv(BlackR_HOBall_imputed, "E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_HOBall_imputed.csv", row.names=TRUE)
 
 ### accel all Black Rockfish
 init <- mice(periods_BlackR_accel_SBE, maxit=0) 
@@ -69,7 +69,7 @@ meth[c("TempC", "C0mS.cm", "Salinity", "DepthM")] <- "rf" #impute with random fo
 imp_BR <- mice(periods_BlackR_accel_SBE, method = meth, predictorMatrix = predM)
 BlackR_accelall_imputed <- complete(imp_BR)
 
-write.csv(BlackR_accelall_imputed, "D:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accelall_imputed.csv", row.names=TRUE)
+write.csv(BlackR_accelall_imputed, "E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accelall_imputed.csv", row.names=TRUE)
 
 
 ### accel all China Rockfish - impute SBE
@@ -85,7 +85,7 @@ meth[c("TempC", "C0mS.cm", "Salinity", "DepthM")] <- "rf" #impute with random fo
 imp_CR <- mice(periods_ChinaR_SBE, method = meth, predictorMatrix = predM)
 ChinaR_accelall_imputed <- complete(imp_CR)
 
-write.csv(ChinaR_accelall_imputed, "D:\\MS research\\RRMR2021ReceiverLogs\\ChinaR_accelall_imputed.csv", row.names=TRUE)
+write.csv(ChinaR_accelall_imputed, "E:\\MS research\\RRMR2021ReceiverLogs\\ChinaR_accelall_imputed.csv", row.names=TRUE)
 
 
 ### wind imputation ########################################
@@ -109,7 +109,7 @@ meth[c("WDIR..degT.", "WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
 imp_BR <- mice(wind_impute_BR_A, method = meth, predictorMatrix = predM)
 BlackR_accel_imputedwind <- complete(imp_BR)
 
-write.csv(BlackR_accel_imputedwind, "D:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accel_imputedwind.csv", row.names=TRUE)
+write.csv(BlackR_accel_imputedwind, "E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accel_imputedwind.csv", row.names=TRUE)
 
 ## BR HOB ##########33 HERE ############### HERERERERERERRERER
 BlackR_HOBall_imputeddat <- BlackR_HOBall_imputed %>% dplyr::select(-Transmitter.Name, -Sensor.Unit, -Transmitter.Type, -Sensor.Precision, 
@@ -132,7 +132,7 @@ meth[c("WDIR..degT.", "WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
 imp_BR <- mice(wind_impute_BR_H, method = meth, predictorMatrix = predM)
 BlackR_HOB_imputedwind <- complete(imp_BR)
 
-write.csv(BlackR_HOB_imputedwind, "D:\\MS research\\RRMR2021ReceiverLogs\\BlackR_HOB_imputedwind.csv", row.names=TRUE)
+write.csv(BlackR_HOB_imputedwind, "E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_HOB_imputedwind.csv", row.names=TRUE)
 
 
 
@@ -154,4 +154,4 @@ meth[c("Lat", "Long", "Distance.to.NS..km.")] <- "rf" #impute with random forest
 #imp_BR <- mice(langseth_impute, method = meth, predictorMatrix = predM)
 #langseth_imputed <- complete(imp_BR)
 
-#write.csv(BlackR_accel_imputedwind, "D:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accel_imputedwind.csv", row.names=TRUE)
+#write.csv(BlackR_accel_imputedwind, "E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accel_imputedwind.csv", row.names=TRUE)

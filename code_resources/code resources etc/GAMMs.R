@@ -18,52 +18,59 @@ library(DHARMa)
 set.seed(49)
 
 #Big dataset
-# dataset name is BlackR_acceleration
+# dataset name is BlackR_acceleration_imputedwind
+BRA <- BlackR_acceleration_imputedwind
 
-BlackR_acceleration <- BlackR_acceleration %>% drop_na(Sensor.Value, TempC, Salinity, Transmitter.Serial,
-                                                       SEL.x, SEL.y)
-BlackR_acceleration <- BlackR_acceleration %>% dplyr::select(-Sensor.Precision, -Transmitter.Type, 
+BRA <- BRA %>% drop_na(Sensor.Value.x, TempC, Salinity, Transmitter.Serial,
+                                                       SEL.x, SEL.y, hourtime, WSPD..m.s.)
+BRA <- BRA %>% dplyr::select(-Sensor.Precision, -Transmitter.Type, 
                                                              -Tag.Destination, -tag.type, 
                                                              -Transmitter.Name, -Flag,
                                                              -Sensor.Unit, -Receiver,
                                                              -hour, -mm.dd.yyyy)
 
-BlackR_acceleration$Transmitter <- as.factor(BlackR_acceleration$Transmitter)
-BlackR_acceleration$detect_day <- as.factor(BlackR_acceleration$detect_day)
-BlackR_acceleration$detect_time <- as.factor(BlackR_acceleration$detect_time)
+BRA$Transmitter <- as.factor(BRA$Transmitter)
+BRA$detect_day <- as.factor(BRA$detect_day)
+BRA$detect_time <- as.factor(BRA$detect_time)
+#BRA$hourtime <- as.factor(BRA$hourtime)
 
 
 
 
-#hist(log(BlackR_acceleration$Sensor.Value +1)): no need to log transform
-hist(BlackR_acceleration$Sensor.Value)
+#hist(log(BRA$Sensor.Value +1)): no need to log transform
+hist(BRA$Sensor.Value)
 
-BlackR_acceleration$Datetime.int <- as.integer(BlackR_acceleration$Date.time.UTC)
-BlackR_acceleration$Transmitter <- as.factor(BlackR_acceleration$Transmitter)
+BRA$Datetime.int <- as.integer(BRA$Date.time.UTC)
+BRA$Transmitter <- as.factor(BRA$Transmitter)
 cs1AR1 <- corCAR1(form = ~ Datetime.int | Transmitter)
-cs1AR1. <- Initialize(cs1AR1, data = BlackR_acceleration)
-corMatrix(cs1AR1.)
+#cs1AR1. <- Initialize(cs1AR1, data = BRA)
+#corMatrix(cs1AR1.)
 
-gam1_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + Transmitter + s(SEL.x), data = BlackR_acceleration, method = "REML")
-gam2_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + Transmitter + s(SEL.y), data = BlackR_acceleration, method = "REML")
-gam3_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + s(Transmitter, bs = "re") + s(SEL.x), data = BlackR_acceleration, method = "REML")
+gam1_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + Transmitter + s(SEL.x), data = BRA, method = "REML")
+gam2_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + Transmitter + s(SEL.y), data = BRA, method = "REML")
+gam3_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + s(Transmitter, bs = "re") + s(SEL.x), data = BRA, method = "REML")
 gam5_bra <- gam(Sensor.Value ~ s(TempC) + s(Salinity) + s(Transmitter, bs = "re") + 
-                  s(SEL.x), data = BlackR_acceleration, 
+                  s(SEL.x), data = BRA, 
                 method = "REML", correlation = corCAR1(form = ~ Datetime.int | 1))
-gam0_bra <- gam(Sensor.Value ~ s(Transmitter, bs = "re"), data = BlackR_acceleration, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
-
-gam1_bra <- gam(Sensor.Value ~ s(TempC, bs = "gp") + s(Transmitter, bs = "re"), data = BlackR_acceleration, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
-
-gam2_bra <- gam(Sensor.Value ~ s(Salinity, bs = "gp")  + s(TempC, bs = "gp") + s(Transmitter, bs = "re"), data = BlackR_acceleration, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
-
-gam3_bra <- gam(Sensor.Value ~ s(Salinity, bs = "gp")  + s(TempC, bs = "gp") + s(Transmitter, bs = "re"), data = BlackR_acceleration, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
-
-
-gamx_bra <- gam(Sensor.Value ~ s(TempC, bs = "gp") + s(Transmitter, bs = "re") + s(SEL.x) + s(SEL.y) + s(SPL.x) + s(SPL.y) + s(Peak.SPL.x) + s(Peak.SPL.y),
-                data = BlackR_acceleration, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter), select = TRUE)
 
 
 
+
+gam0_bra <- gam(Sensor.Value.x ~ s(Transmitter, bs = "re"), data = BRA, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
+
+gam1_bra <- gam(Sensor.Value.x ~ s(TempC, bs = "gp") + s(Transmitter, bs = "re"), data = BRA, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
+
+gam2_bra <- gam(Sensor.Value.x ~ s(Salinity, bs = "gp")  + s(TempC, bs = "gp") + s(Transmitter, bs = "re"), data = BRA, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
+
+gam3_bra <- gam(Sensor.Value.x ~ hourtime + s(Salinity, bs = "gp", k = 125)  + s(TempC, bs = "gp", k = 150) + s(Transmitter, bs = "re"), data = BRA, 
+                method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
+
+gam4_bra <- gam(Sensor.Value.x ~ s(WSPD..m.s.) + hourtime + s(Salinity, bs = "gp", k = 125)  + s(TempC, bs = "gp", k = 150) + s(Transmitter, bs = "re"), data = BRA, 
+                method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter))
+
+gam5_bra
+
+#gamx_bra <- gam(Sensor.Value ~ s(TempC, bs = "gp") + s(Transmitter, bs = "re") + s(SEL.x) + s(SEL.y) + s(SPL.x) + s(SPL.y) + s(Peak.SPL.x) + s(Peak.SPL.y),data = BRA, method = "REML", correlation = corCAR1(form = ~ Datetime.int | Transmitter), select = TRUE)
 
 
 
@@ -71,6 +78,9 @@ gamx_bra <- gam(Sensor.Value ~ s(TempC, bs = "gp") + s(Transmitter, bs = "re") +
 
 summary(gam5_bra)
 summary(gam0_bra)
+summary(gam3_bra)
+
+gam.check(gam3_bra)
 
 coef(gam5_bra)
 plot(gam2_bra, residuals = FALSE, pch = 1)
@@ -112,7 +122,7 @@ validgam(model=re0,count=log(Accel$Accelerometer+1))
 
 plotGAM(gamFit = gam3_bra, smooth.cov = "SEL.x")
 plotGAM(gamFit = gam3_bra, smooth.cov = "Salinity")
-validgam(model = gam3_bra, count = BlackR_acceleration$Sensor.Value)
+validgam(model = gam3_bra, count = BRA$Sensor.Value)
 
 resids<-resid(re0,"pearson")
 d1=data.frame(cbind(resids,Accel$HR))

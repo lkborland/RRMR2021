@@ -16,7 +16,7 @@ library(tmaptools)
 
 oregon <- us_states(resolution = "high", states = "oregon")
 
-locdat <- read.csv("D:\\MS research\\RRMR2021ReceiverLogs\\receiver_waypts.csv")
+locdat <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\receiver_waypts.csv")
 locdat_sf <- st_as_sf(locdat, coords = c('Lon', 'Lat'), crs = st_crs(oregon)$proj4string)
 po_region <- st_bbox(c(xmin = -124.497, xmax = -124.4555,
                       ymin = 42.68760, ymax = 42.712),
