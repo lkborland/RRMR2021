@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+<name></name>
+<description><![CDATA[]]></description>
+
+<Placemark>
+<name>KML Polygons</name>
+<description><![CDATA[]]></description>
+<visibility>1</visibility>
+<Style><LineStyle><width>1</width><color>ffffffff</color></LineStyle><PolyStyle><color>ffff0000</color><fill>1</fill></PolyStyle></Style>
+<MultiGeometry>
+<Polygon>
+<outerBoundaryIs>
+<LinearRing><coordinates>
+-124.473531016949,42.6953443674119
+-124.473538114032,42.6953515254238
+-124.473531016949,42.6953652577133
+-124.473271003701,42.696196101695
+-124.472686440678,42.6968284464876
+-124.47261666469,42.6970406779662
+-124.472129961174,42.6978852542374
+-124.471841864407,42.6981525959191
+-124.471508539054,42.6978852542374
+-124.470997288136,42.6974834030499
+-124.470626496501,42.6970406779662
+-124.470997288136,42.6966351885538
+-124.471664116209,42.696196101695
+-124.471841864407,42.6959859267834
+-124.472000160386,42.6953515254238
+-124.472686440678,42.6947081019918
+-124.473531016949,42.6953443674119
+-124.473531016949,42.6953443674119
+</coordinates></LinearRing>
+</outerBoundaryIs>
+</Polygon>
+</MultiGeometry>
+</Placemark>
+
+</Document>
+</kml>
