@@ -382,6 +382,16 @@ dat_BlackR_depth$Date.time.UTC <- with_tz(dat_BlackR_depth$Date.time.UTC, tzone 
 dat_ChinaR$Date.time.UTC <- as.POSIXct(strptime(dat_ChinaR$Date.time.UTC, "%Y-%m-%d %H:%M:%S"))
 dat_ChinaR$Date.time.UTC <- with_tz(dat_ChinaR$Date.time.UTC, tzone = "US/Pacific")
 
+#remove observations of transmitters with too low sample size/observations
+##China R: 13265
+dat_ChinaR <- dat_ChinaR %>% filter(!(Transmitter == "A69-9007-13265" | Transmitter == "A69-9007-13268"))
+
+##Black R accel: 12072
+dat_BlackR_accel <- dat_BlackR_accel %>% filter(!(Transmitter == "A69-9007-12072"))
+dat_BlackR_depth <- dat_BlackR_depth %>% filter(!(Transmitter == "A69-9007-12073"))
+
+##Lingcod: 13250, 13262
+dat_Lingcod <- dat_Lingcod %>% filter(!(Transmitter == "A69-9007-13262"))
 
 #PRELIMINARY - tell R the time range of seismic survey
 surveydates <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\periods_time.csv")
@@ -494,21 +504,31 @@ periods_ChinaR <- dat_ChinaR %>% mutate(survey.period = case_when(Date.time.UTC 
                                                                   Date.time.UTC >= June27_start & Date.time.UTC <= July4_end ~ "June 27-July 4",
                                                                   Date.time.UTC >= July5_start & Date.time.UTC <= July12_end ~ "July 5-12"))
 
-periods_Dungeness <- dat_Dungeness %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "May 20-June 10",
+periods_Dungeness <- dat_Dungeness %>% mutate(survey.period = case_when(Date.time.UTC < May10_start ~ "Early",
+                                                                        Date.time.UTC >= May10_start & Date.time.UTC <= May17_end ~ "May 10-17",
+                                                                        Date.time.UTC >= May18_start & Date.time.UTC <= May25_end ~ "May 18-25",
+                                                                        Date.time.UTC >= May26_start & Date.time.UTC <= June2_end ~ "May 26-June 2",
+                                                                        Date.time.UTC >= June3_start & Date.time.UTC <= June10_end ~ "June 3-10",
                                                                         Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
-                                                                        Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
-                                                                        Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
+                                                                        Date.time.UTC >= June12_start & Date.time.UTC <= June16_end ~ "June 12-16",
                                                                         Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
                                                                         Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
-                                                                        Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "June 19-July 11"))
+                                                                        Date.time.UTC >= June19_start & Date.time.UTC <= June26_end ~ "June 19-26",
+                                                                        Date.time.UTC >= June27_start & Date.time.UTC <= July4_end ~ "June 27-July 4",
+                                                                        Date.time.UTC >= July5_start & Date.time.UTC <= July12_end ~ "July 5-12"))
 
-periods_Lingcod <- dat_Lingcod %>% mutate(survey.period = case_when(Date.time.UTC < June11_start ~ "May 20-June 10",
+periods_Lingcod <- dat_Lingcod %>% mutate(survey.period = case_when(Date.time.UTC < May10_start ~ "Early",
+                                                                    Date.time.UTC >= May10_start & Date.time.UTC <= May17_end ~ "May 10-17",
+                                                                    Date.time.UTC >= May18_start & Date.time.UTC <= May25_end ~ "May 18-25",
+                                                                    Date.time.UTC >= May26_start & Date.time.UTC <= June2_end ~ "May 26-June 2",
+                                                                    Date.time.UTC >= June3_start & Date.time.UTC <= June10_end ~ "June 3-10",
                                                                     Date.time.UTC >= June11_start & Date.time.UTC <= June11_end ~ "June 11",
-                                                                    Date.time.UTC > June11_end & Date.time.UTC < June16_start ~ "June 12-16",
-                                                                    Date.time.UTC >= June16_start & Date.time.UTC <= June16_end ~ "June 16",
+                                                                    Date.time.UTC >= June12_start & Date.time.UTC <= June16_end ~ "June 12-16",
                                                                     Date.time.UTC >= June17_start & Date.time.UTC <= June17_end ~ "June 17",
                                                                     Date.time.UTC >= June18_start & Date.time.UTC <= June18_end ~ "June 18",
-                                                                    Date.time.UTC > June18_end & Date.time.UTC <= July11_end ~ "June 19-July 11"))
+                                                                    Date.time.UTC >= June19_start & Date.time.UTC <= June26_end ~ "June 19-26",
+                                                                    Date.time.UTC >= June27_start & Date.time.UTC <= July4_end ~ "June 27-July 4",
+                                                                    Date.time.UTC >= July5_start & Date.time.UTC <= July12_end ~ "July 5-12"))
 
 
 
@@ -710,6 +730,13 @@ NS70cm_vel$Time <- with_tz(NS70cm_vel$Time, tzone = "US/Pacific")
 NS70cm_vel <- NS70cm_vel %>% rename(Date.time.UTC = Time)
 NS70cm_vel$Date.time.UTC <- round_date(NS70cm_vel$Date.time.UTC, "30 seconds")
 
+
+NS_metrics <- read.csv("E:\\MS research\\Integral NoiseSpotter Data\\May 23\\median_metric_values.csv")
+NS_metrics <- NS_metrics %>% tidyr::spread(key = metric, value = median_1minute_value)
+NS_metrics$time_round <- as.POSIXct(NS_metrics$time_round, format = "%m/%d/%Y %H:%M")
+NS_metrics$time_round <- with_tz(NS_metrics$time_round, tzone = "US/Pacific")
+NS_metrics <- NS_metrics %>% rename(Date.time.UTC = time_round) 
+
 #combine noise data sets
 NSall_press <- full_join(NS35cm, NS50cm, by = "Date.time.UTC", multiple = "all")
 NSall_press <- full_join(NSall_press, NS70cm, by = "Date.time.UTC", multiple = "all")
@@ -724,9 +751,13 @@ NS70all <- full_join(NS70cm, NS70cm_vel, by = "Date.time.UTC")
 
 ggplot(NS35all, aes(Peak.SPL.x, Peak.SPL.y)) + geom_point()
 
-ggplot(NS35cm_vel, aes(Date.time.UTC, SEL)) + 
+ggplot(NS_metrics, aes(time_round, `SPL[rms]  (dB)`)) + 
   geom_point() +
-  labs(x = "Time", y = "Sound Exposure Level (35cm sensor)", title = "Received sound exposure levels")
+  labs(x = "Time", y = "Sound Pressure Level RMS @35cm (dB)", title = "Received sound pressure levels (rms)")
+
+ggplot(NS_metrics, aes(time_round, Kurtosis)) + 
+  geom_point() +
+  labs(x = "Time", y = "Sound kurtosis @35cm", title = "Sound kurtosis over time")
 
 
 #round times in acceleration data sets to combine with Noise Spotter data
@@ -735,6 +766,9 @@ ggplot(NS35cm_vel, aes(Date.time.UTC, SEL)) +
 periods_BlackR_accel$Date.time.UTC <- round_date(periods_BlackR_accel$Date.time.UTC, "30 seconds")
 periods_BlackR_depth$Date.time.UTC <- round_date(periods_BlackR_depth$Date.time.UTC, "30 seconds")
 periods_ChinaR$Date.time.UTC <- round_date(periods_ChinaR$Date.time.UTC, "30 seconds")
+
+periods_Lingcod$Date.time.UTC <- round_date(periods_Lingcod$Date.time.UTC, "30 seconds")
+periods_Dungeness$Date.time.UTC <- round_date(periods_Dungeness$Date.time.UTC, "30 seconds")
 
 periodsbr.ex$Date.time.UTC <- round_date(periodsbr.ex$Date.time.UTC, "30 seconds")
 
@@ -771,6 +805,10 @@ periodsbr.ex$detect_time <- as.POSIXct(periodsbr.ex$detect_time, format = "%H:%M
 date(periodsbr.ex$detect_time) <- today(tzone = "US/Pacific")
 
 
+L11 <- periods_Lingcod %>% filter(survey.period == "June 11") %>% group_by(Transmitter)
+table(unique(L11$Receiver))
+
+
 ################################
 ##############################
 ###########################
@@ -782,11 +820,11 @@ date(periodsbr.ex$detect_time) <- today(tzone = "US/Pacific")
 #add noise levels to data sets of movement metrics, remove observations without noise data
 ###############################################################
 #periods_Dungeness_noise <- inner_join(NS35cm_vel, periods_Dungeness, by = "Date.time.UTC")
-#periods_Lingcod_noise <- inner_join(NS35cm, periods_Lingcod, by = "Date.time.UTC")
-periods_BlackR_accel_70noise <- inner_join(NS70all, periods_BlackR_accel, by = "Date.time.UTC", multiple = "all")
-periods_BlackR_depth_70noise <- inner_join(NS70all, periods_BlackR_depth, by = "Date.time.UTC", multiple = "all")
-periods_ChinaR_50noise <- inner_join(NS50all, periods_ChinaR, by = "Date.time.UTC", multiple = "all")
-periods_BlackR_HOB_70noise <- inner_join(NS70all, periods_BlackR_HOB, by = "Date.time.UTC", multiple = "all")
+periods_Lingcod_noise <- inner_join(NS35all, periods_Lingcod, by = "Date.time.UTC")
+periods_BlackR_accel_70noise <- inner_join(NS35all, periods_BlackR_accel, by = "Date.time.UTC", multiple = "all")
+periods_BlackR_depth_70noise <- inner_join(NS35all, periods_BlackR_depth, by = "Date.time.UTC", multiple = "all")
+periods_ChinaR_50noise <- inner_join(NS35all, periods_ChinaR, by = "Date.time.UTC", multiple = "all")
+periods_BlackR_HOB_70noise <- inner_join(NS35all, periods_BlackR_HOB, by = "Date.time.UTC", multiple = "all")
 
 #add Port Orford SBE data to data sets with sensor values
 Port_O_SBE <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\Port_Orford_SBE.csv")
@@ -828,6 +866,8 @@ periods_BlackR_accel_SBE <- full_join(Port_O_SBE, periods_BlackR_accel, by = "Da
 periods_BlackR_depth_SBE <- full_join(Port_O_SBE, periods_BlackR_depth, by = "Date.time.UTC", multiple = "all")
 periods_ChinaR_SBE <- full_join(Port_O_SBE, periods_ChinaR, by = "Date.time.UTC", multiple = "all")
 periods_BlackR_HOB_SBE <- full_join(Port_O_SBE, periods_BlackR_HOB, by = "Date.time.UTC", multiple = "all")
+periods_Lingcod_SBE <- full_join(Port_O_SBE, periods_Lingcod, by = "Date.time.UTC", multiple = "all")
+
 
 periodsbr.ex.SBE <- full_join(Port_O_SBE, periodsbr.ex, by = "Date.time.UTC")
 
@@ -835,6 +875,7 @@ periodsbr.ex.SBE <- full_join(Port_O_SBE, periodsbr.ex, by = "Date.time.UTC")
 # RUN IMPUTATION / read in CSV files
 ###############
 ################
+#################################
 
 BlackR_accelall_imputed <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accelall_imputed.csv")
 BlackR_accelall_imputed$Date.time.UTC <- as.POSIXct(BlackR_accelall_imputed$Date.time.UTC, format = "%Y-%m-%d %H:%M:%S", tz = "US/Pacific")
@@ -845,25 +886,48 @@ BlackR_HOBall_imputed$Date.time.UTC <- as.POSIXct(BlackR_HOBall_imputed$Date.tim
 ChinaR_accelall_imputed <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\ChinaR_accelall_imputed.csv")
 ChinaR_accelall_imputed$Date.time.UTC <- as.POSIXct(ChinaR_accelall_imputed$Date.time.UTC, format = "%Y-%m-%d %H:%M:%S", tz = "US/Pacific")
 
+ChinaR_accel_imputedwind <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\ChinaR_accel_imputedwind.csv")
+ChinaR_accel_imputedwind$Date.time.UTC <- as.POSIXct(ChinaR_accel_imputedwind$Date.time.UTC, format = "%Y-%m-%d %H:%M:%S", tz = "US/Pacific")
+
 BlackR_accel_imputedwind <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accel_imputedwind.csv")
 BlackR_accel_imputedwind$Date.time.UTC <- as.POSIXct(BlackR_accel_imputedwind$Date.time.UTC, format = "%Y-%m-%d %H:%M:%S", tz = "US/Pacific")
+
+Lingcod_accel_imputedwind <- read.csv("E:\\MS research\\RRMR2021ReceiverLogs\\Lingcod_accel_imputedwind.csv")
+Lingcod_accel_imputedwind$Date.time.UTC <- as.POSIXct(Lingcod_accel_imputedwind$Date.time.UTC, format = "%Y-%m-%d %H:%M:%S", tz = "US/Pacific")
 
 
 
 
 ####### combine all datasets into "Big Dataset" for GAMM purposes
 ############# HERE ##################333
-BlackR_acceleration <- dplyr::inner_join(NS70all, BlackR_accelall_imputed, by = "Date.time.UTC", multiple = "all")
+BlackR_acceleration <- dplyr::inner_join(NS35all, BlackR_accelall_imputed, by = "Date.time.UTC", multiple = "all")
 
-ChinaR_acceleration <- dplyr::inner_join(NS50all, ChinaR_accelall_imputed, by = "Date.time.UTC", multiple = "all")
+ChinaR_acceleration <- dplyr::inner_join(NS35all, ChinaR_accelall_imputed, by = "Date.time.UTC", multiple = "all")
+
+Lingcod_acceleration <- dplyr::inner_join(NS35all, Lingcod_accel_imputedwind, by = "Date.time.UTC", multiple = "all")
 
 #BlackR_acceleration_wind <- dplyr::inner_join(NS70all, BlackR_accel_imputedwind, by = "Date.time.UTC", multiple = "all")
 
+BlackR_HOB <- dplyr::inner_join(NS35all, BlackR_HOBall_imputed, by = "Date.time.UTC", multiple = "all")
 
-#### do this
-BlackR_acceleration_imputedwind <- dplyr::inner_join(BlackR_accel_imputedwind, BlackR_acceleration, by = "Date.time.UTC", multiple = "all")
-BlackR_acceleration_imputedwind$hourtime <- hour(BlackR_acceleration_imputedwind$detect_time)
+BlackR_acceleration_wind <- BlackR_acceleration %>% 
+  inner_join(dplyr::select(BlackR_accel_imputedwind, Date.time.UTC, WDIR..degT., 
+                           WSPD..m.s., GST..m.s., WVHT..m., PRES..hPa., ATMP..degC., 
+                           WTMP..degC.), by="Date.time.UTC", multiple = "all")
+BlackR_acceleration_wind$hourtime <- hour(BlackR_acceleration_wind$detect_time)
 
+ChinaR_acceleration_wind <- ChinaR_acceleration %>%  
+  inner_join(dplyr::select(ChinaR_accel_imputedwind, Date.time.UTC, WDIR..degT., 
+                           WSPD..m.s., GST..m.s., WVHT..m., PRES..hPa., ATMP..degC., 
+                           WTMP..degC.), by="Date.time.UTC", multiple = "all")
+ChinaR_acceleration_wind$hourtime <- hour(ChinaR_acceleration_wind$detect_time)
+
+BlackR_HOB_wind <- BlackR_HOBall_imputed %>% 
+  inner_join(dplyr::select(BlackR_accel_imputedwind, Date.time.UTC, WDIR..degT., 
+                           WSPD..m.s., GST..m.s., WVHT..m., PRES..hPa., ATMP..degC., 
+                           WTMP..degC.), by="Date.time.UTC", multiple = "all")
+BlackR_HOB_wind$hourtime <- hour(BlackR_HOB_wind$detect_time)
+BlackR_HOB_wind <- BlackR_HOB_wind %>% inner_join(NS35all, by = "Date.time.UTC", multiple = "all")
 
 
 #upper 25th quartiles
@@ -909,15 +973,55 @@ length(unique(periods_BlackR_accel$Receiver))
 
 ########################------------------------------
 n_Lingcod <- periods_Lingcod %>% dplyr::count(survey.period, Transmitter)
-n_Lingcod <- n_Lingcod %>% dplyr::group_by(survey.period) %>% dplyr::summarise(n()) %>% dplyr::rename(number = 'n()')                                                  
+n_Lingcod <- n_Lingcod %>% dplyr::select(survey.period, Transmitter)
+n_Lingcodobs <- periods_Lingcod %>% dplyr::count(survey.period, Transmitter) #%>% dplyr::group_by(survey.period) %>% dplyr::summarise(n()) %>% dplyr::rename(number = 'n()')                                              
+n_Lingcodobs <- n_Lingcodobs %>% dplyr::select(survey.period, n) %>% dplyr::group_by(survey.period) %>% summarise(sumobs = sum(n, na.rm = TRUE))
+
+
 
 Lingcodn_overperiods <- ggplot(n_Lingcod, aes(x=survey.period, fill = survey.period)) + 
   geom_bar() +
-  scale_x_discrete(limits=c("May 20-June 10", "June 11", "June 12-16", "June 16", "June 17", "June 18", "June 19-July 11")) +
+  scale_x_discrete(limits=period_lvl) +
   labs(x = "Period of survey", y = "Number of individuals", title = "Lingcod Individuals by Period")+  
-  scale_fill_manual(values = noise_colors_repeat, breaks = period_lvl, labels = noise_labels, name = "Survey period")
+  scale_fill_manual(values = noise_colors_repeat, breaks = period_lvl, labels = noise_labels, name = "Survey period") +
+  geom_text(data = n_Lingcodobs,
+            aes(label = sumobs,
+                y = 12.5,
+                x = survey.period,
+                group = survey.period),
+            position = position_dodge(width = 0.9),
+            check_overlap = TRUE,
+            show.legend = FALSE,
+            inherit.aes = FALSE)
 
 Lingcodn_overperiods
+
+
+
+
+n_Dungeness <- periods_Dungeness %>% dplyr::count(survey.period, Transmitter)
+n_Dungeness <- n_Dungeness %>% dplyr::select(survey.period, Transmitter)
+n_Dungenessobs <- periods_Dungeness %>% dplyr::count(survey.period, Transmitter) #%>% dplyr::group_by(survey.period) %>% dplyr::summarise(n()) %>% dplyr::rename(number = 'n()')                                              
+n_Dungenessobs <- n_Dungenessobs %>% dplyr::select(survey.period, n) %>% dplyr::group_by(survey.period) %>% summarise(sumobs = sum(n, na.rm = TRUE))
+
+
+
+Dungenessn_overperiods <- ggplot(n_Dungeness, aes(x=survey.period, fill = survey.period)) + 
+  geom_bar() +
+  scale_x_discrete(limits=period_lvl) +
+  labs(x = "Period of survey", y = "Number of individuals", title = "Dungeness Individuals by Period")+  
+  scale_fill_manual(values = noise_colors_repeat, breaks = period_lvl, labels = noise_labels, name = "Survey period") +
+  geom_text(data = n_Dungenessobs,
+            aes(label = sumobs,
+                y = 12.5,
+                x = survey.period,
+                group = survey.period),
+            position = position_dodge(width = 0.9),
+            check_overlap = TRUE,
+            show.legend = FALSE,
+            inherit.aes = FALSE)
+
+Dungenessn_overperiods
 ###----------------------------------------------------
 
 

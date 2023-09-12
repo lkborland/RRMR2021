@@ -88,6 +88,23 @@ ChinaR_accelall_imputed <- complete(imp_CR)
 write.csv(ChinaR_accelall_imputed, "E:\\MS research\\RRMR2021ReceiverLogs\\ChinaR_accelall_imputed.csv", row.names=TRUE)
 
 
+
+## impute SBE for lingcod
+init <- mice(periods_Lingcod_SBE, maxit=0) 
+meth <- init$method
+predM <- init$predictorMatrix
+
+predM[!names(predM) %in% c("TempC", "C0mS.cm", "Salinity", "DepthM", "Date.time.UTC")] <- 0
+meth[!names(meth) %in% c("TempC", "C0mS.cm", "Salinity", "DepthM")] <- ""
+
+meth[c("TempC", "C0mS.cm", "Salinity", "DepthM")] <- "rf" #impute with random forest method
+
+imp_LC <- mice(periods_Lingcod_SBE, method = meth, predictorMatrix = predM)
+periods_Lingcod_imputed <- complete(imp_LC)
+
+write.csv(periods_Lingcod_imputed, "E:\\MS research\\RRMR2021ReceiverLogs\\periods_Lingcod_imputed.csv", row.names=TRUE)
+
+
 ### wind imputation ########################################
 ## did not work first time - I needed to remove extraneous columns in excel csv file 
 ## perhaps mice() can only deal with so many columns, even if strictly excluded from imputation
@@ -110,6 +127,53 @@ imp_BR <- mice(wind_impute_BR_A, method = meth, predictorMatrix = predM)
 BlackR_accel_imputedwind <- complete(imp_BR)
 
 write.csv(BlackR_accel_imputedwind, "E:\\MS research\\RRMR2021ReceiverLogs\\BlackR_accel_imputedwind.csv", row.names=TRUE)
+
+
+
+#### wind impute for china R
+times_CRaccel <- ChinaR_accelall_imputed[, c("Date.time.UTC", "Sensor.Value")]
+wind_impute_CR_A <- full_join(times_CRaccel, Port_O_wind, by = "Date.time.UTC", multiple = "all")
+init <- mice(wind_impute_CR_A, maxit=0)
+meth <- init$method
+predM <- init$predictorMatrix
+
+predM[!names(predM) %in% c("WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
+                           "ATMP..degC.", "WTMP..degC.", "Date.time.UTC")] <- 0 #don't use things that aren't these to predict
+
+meth[!names(meth) %in% c("WDIR..degT.", "WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
+                         "ATMP..degC.", "WTMP..degC.")] <- "" #don't impute things that aren't these
+
+meth[c("WDIR..degT.", "WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
+       "ATMP..degC.", "WTMP..degC.")] <- "rf" #impute with random forest method
+
+imp_CR <- mice(wind_impute_CR_A, method = meth, predictorMatrix = predM)
+ChinaR_accel_imputedwind <- complete(imp_CR)
+
+write.csv(ChinaR_accel_imputedwind, "E:\\MS research\\RRMR2021ReceiverLogs\\ChinaR_accel_imputedwind.csv", row.names=TRUE)
+
+
+#### wind impute for lingcod
+times_LCaccel <- periods_Lingcod_imputed[, c("Date.time.UTC", "Sensor.Value")]
+wind_impute_LC_A <- full_join(times_LCaccel, Port_O_wind, by = "Date.time.UTC", multiple = "all")
+init <- mice(wind_impute_LC_A, maxit=0)
+meth <- init$method
+predM <- init$predictorMatrix
+
+predM[!names(predM) %in% c("WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
+                           "ATMP..degC.", "WTMP..degC.", "Date.time.UTC")] <- 0 #don't use things that aren't these to predict
+
+meth[!names(meth) %in% c("WDIR..degT.", "WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
+                         "ATMP..degC.", "WTMP..degC.")] <- "" #don't impute things that aren't these
+
+meth[c("WDIR..degT.", "WSPD..m.s.", "GST..m.s.", "PRES..hPa.",
+       "ATMP..degC.", "WTMP..degC.")] <- "rf" #impute with random forest method
+
+imp_LC <- mice(wind_impute_LC_A, method = meth, predictorMatrix = predM)
+Lingcod_accel_imputedwind <- complete(imp_LC)
+
+write.csv(Lingcod_accel_imputedwind, "E:\\MS research\\RRMR2021ReceiverLogs\\Lingcod_accel_imputedwind.csv", row.names=TRUE)
+
+
 
 ## BR HOB ##########33 HERE ############### HERERERERERERRERER
 BlackR_HOBall_imputeddat <- BlackR_HOBall_imputed %>% dplyr::select(-Transmitter.Name, -Sensor.Unit, -Transmitter.Type, -Sensor.Precision, 

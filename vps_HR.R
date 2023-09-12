@@ -562,3 +562,10 @@ library(ks)
 library(rgl)
 kern <- read.table(file.choose(), sep=",")
 ex_L_KDE <- kde(ex_Lingcod.sp)
+
+
+
+
+
+
+#######

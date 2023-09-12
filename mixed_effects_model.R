@@ -17,6 +17,8 @@ noise_labels <- c("Before", "Noise", "No noise", "Noise",
                   "Noise", "Noise", "After")
 
 
+
+
 noise_labels_9 <- c("Before", "Before", "Before", "June 11", "June 17", "June 18",
                     "After", "After", "After")
 noise_lvl_9 <- c("2021-06-01", "2021-06-03", "2021-06-08", "2021-06-11", "2021-06-17", 
